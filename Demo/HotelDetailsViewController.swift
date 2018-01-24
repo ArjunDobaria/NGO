@@ -7,10 +7,9 @@
 //
 
 import UIKit
-import MapKit
-import CoreLocation
 
-class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, CLLocationManagerDelegate {
+
+class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
 
     @IBOutlet weak var subview: UIView!
     @IBOutlet weak var centerview: UIView!
@@ -18,7 +17,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var closebtn: UIButton!
     @IBOutlet weak var favoritebtn: UIButton!
     
-    @IBOutlet weak var mapview: MKMapView!
+//    @IBOutlet weak var mapview: MKMapView!
     
     @IBOutlet weak var backgroundimg: UIImageView!
     
@@ -42,18 +41,16 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var dessertbtn: UIButton!
     @IBOutlet weak var soupbtn: UIButton!
     
-    var locationManager : CLLocationManager    = CLLocationManager()
-    let newPin = MKPointAnnotation()
+//    var locationManager : CLLocationManager    = CLLocationManager()
+//    let newPin = MKPointAnnotation()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       
        
         //MARK:- Map
-        mapview.delegate = self
+//        mapview.delegate = self
         
-        map()
+      
         
         //MARK:- Ltitude Longitude wise location
         
@@ -116,20 +113,20 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
 //    }
     
     //MARK:- Map Delegate to add pin on map
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        mapview.removeAnnotation(newPin)
-
-        let location = locations.last! as CLLocation
-
-        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-
-        //set region on the map
-        mapview.setRegion(region, animated: true)
-
-        newPin.coordinate = location.coordinate
-        mapview.addAnnotation(newPin)
-    }
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        mapview.removeAnnotation(newPin)
+//
+//        let location = locations.last! as CLLocation
+//
+//        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+//        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+//
+//        //set region on the map
+//        mapview.setRegion(region, animated: true)
+//
+//        newPin.coordinate = location.coordinate
+//        mapview.addAnnotation(newPin)
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -162,7 +159,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         aboutview.frame = CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: subview.frame.height)
         aboutview.backgroundColor = UIColor.white
         self.subview.addSubview(aboutview)
-        
+//        map()
         previewview.removeFromSuperview()
     }
     
@@ -339,28 +336,28 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
 //        btn2.isSelected = true
 //        btn2.setTitleColor(UIColor.orange, for: UIControlState.normal)
 //    }
-    func map()
-    {
-        mapview.showsUserLocation = true
-        
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.delegate = self
-        
-        //Check for Location Services
-        if (CLLocationManager.locationServicesEnabled()) {
-            locationManager = CLLocationManager()
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.requestAlwaysAuthorization()
-            locationManager.requestWhenInUseAuthorization()
-        }
-        locationManager.requestWhenInUseAuthorization()
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.startUpdatingLocation()
-        }
-        
-        DispatchQueue.main.async {
-            self.locationManager.startUpdatingLocation()
-        }
-    }
+//    func map()
+//    {
+//        mapview.showsUserLocation = true
+//
+//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+//        locationManager.delegate = self
+//
+//        //Check for Location Services
+//        if (CLLocationManager.locationServicesEnabled()) {
+//            locationManager = CLLocationManager()
+//            locationManager.delegate = self
+//            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+//            locationManager.requestAlwaysAuthorization()
+//            locationManager.requestWhenInUseAuthorization()
+//        }
+//        locationManager.requestWhenInUseAuthorization()
+//        if CLLocationManager.locationServicesEnabled() {
+//            locationManager.startUpdatingLocation()
+//        }
+//
+//        DispatchQueue.main.async {
+//            self.locationManager.startUpdatingLocation()
+//        }
+//    }
 }

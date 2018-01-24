@@ -16,8 +16,11 @@ class SideMenuViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-         tableData = NSMutableArray(objects: "Item1", "Item2", "Item3", "Item4", "Item5")
+        if(UIDevice.current.userInterfaceIdiom == .pad)
+        {
+            menuContainerViewController.menuWidth = 400
+        }
+        tableData = NSMutableArray(objects: "Item1", "Item2", "Item3", "Item4", "Item5")
         self.tblview.separatorStyle = UITableViewCellSeparatorStyle.none
         
         // Do any additional setup after loading the view.
@@ -43,6 +46,7 @@ class SideMenuViewController: UIViewController, UITableViewDelegate, UITableView
     {
         tableView.cellForRow(at: indexPath)?.backgroundColor = UIColor.white
         tableView.cellForRow(at: indexPath)?.textLabel?.textColor = UIColor.black
+        tableView.cellForRow(at: indexPath)?.textLabel?.font = UIFont(name:"System", size:22)
     }
     
     
@@ -53,27 +57,27 @@ class SideMenuViewController: UIViewController, UITableViewDelegate, UITableView
         switch indexPath.row
         {
         case 0:
-            let vc: HomeViewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            let vc: WebViewController = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
             rootNav.pushViewController(vc, animated: true)
             break
             
         case 1:
-            let vc: HomeViewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            let vc: WebViewController = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
             rootNav.pushViewController(vc, animated: true)
             break
             
         case 2:
-            let vc: HomeViewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            let vc: WebViewController = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
             rootNav.pushViewController(vc, animated: true)
             break
             
         case 4:
-            let vc: HomeViewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            let vc: WebViewController = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
             rootNav.pushViewController(vc, animated: true)
             break
             
         case 3:
-            let vc: HomeViewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            let vc: WebViewController = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
             rootNav.pushViewController(vc, animated: true)
             break
             

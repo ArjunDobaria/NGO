@@ -29,6 +29,7 @@
 		0CBBDFDB2015A6A10088C403 /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBBDFD92015A6A10088C403 /* ReviewTableViewCell.swift */; };
 		0CBBDFDC2015A6A10088C403 /* ReviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CBBDFDA2015A6A10088C403 /* ReviewTableViewCell.xib */; };
 		0CBBDFDE2015BF800088C403 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CBBDFDD2015BF800088C403 /* GoogleService-Info.plist */; };
+		0CE33DB7201853D0000CA3DF /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE33DB6201853D0000CA3DF /* WebViewController.swift */; };
 		4BE3C8B3350ABBE76152B32E /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7329DB036B36FBD7D90D8FB /* Pods_Demo.framework */; };
 /* End PBXBuildFile section */
 
@@ -86,6 +87,7 @@
 		0CBBDFD92015A6A10088C403 /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
 		0CBBDFDA2015A6A10088C403 /* ReviewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewTableViewCell.xib; sourceTree = "<group>"; };
 		0CBBDFDD2015BF800088C403 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0CE33DB6201853D0000CA3DF /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		30EA351F7C9BCC73A805B4DD /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		A0E0853CF70D75011BA68816 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 		F7329DB036B36FBD7D90D8FB /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,8 +179,9 @@
 				0C21A639200CDB9900030012 /* ViewController.swift */,
 				0C1A58D3200F622A00AF8F76 /* HomeViewController.swift */,
 				0CBA91B6201050840067D675 /* HotelDetailsViewController.swift */,
-				0CBBDFDD2015BF800088C403 /* GoogleService-Info.plist */,
 				0CA44DD32017576900D313B2 /* SideMenuViewController.swift */,
+				0CBBDFDD2015BF800088C403 /* GoogleService-Info.plist */,
+				0CE33DB6201853D0000CA3DF /* WebViewController.swift */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -390,10 +393,16 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Demo/Pods-Demo-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlacePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -408,6 +417,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Demo/Pods-Demo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
@@ -422,6 +432,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
@@ -453,6 +464,7 @@
 				0CBA91B7201050840067D675 /* HotelDetailsViewController.swift in Sources */,
 				0C21A63A200CDB9900030012 /* ViewController.swift in Sources */,
 				0CBA91BA2010655B0067D675 /* MenuitemsTableViewCell.swift in Sources */,
+				0CE33DB7201853D0000CA3DF /* WebViewController.swift in Sources */,
 				0C21A638200CDB9900030012 /* AppDelegate.swift in Sources */,
 				0CA44DD42017576900D313B2 /* SideMenuViewController.swift in Sources */,
 				0CA44DD720175EF800D313B2 /* SideMenuTableViewCell.swift in Sources */,

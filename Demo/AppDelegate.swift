@@ -11,6 +11,8 @@ import Google
 import MFSideMenu
 import GoogleSignIn
 import FBSDKLoginKit
+import GooglePlaces
+import GoogleMaps
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,6 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             DashbordCall()
         }
         
+        GMSPlacesClient.provideAPIKey("AIzaSyDkWnLbjYJfbRs5tU5Uen2FzEXe0g8W4Ag")
+        GMSServices.provideAPIKey("AIzaSyDkWnLbjYJfbRs5tU5Uen2FzEXe0g8W4Ag")
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         return true
@@ -85,15 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         {
             rootNav.pushViewController(menuContainer, animated: true)
         }
-
-       
     }
-    
-//    storyboard = UIStoryboard(name: "Main", bundle: nil)
-//    let rootNavigationController:UINavigationController = self.window?.rootViewController as! UINavigationController
-//    let navigationController:UINavigationController = storyboard.instantiateViewController(withIdentifier: "ViewControllerVC")  as! UINavigationController
-//
-//
 
 }
 

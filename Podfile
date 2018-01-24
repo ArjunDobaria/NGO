@@ -9,4 +9,8 @@ use_frameworks!
   pod 'HCSStarRatingView', '~> 1.5'
   pod 'LGSideMenuController'
   pod 'MFSideMenu'
+  pod 'Alamofire', '~> 4.5'
+  pod 'GooglePlaces'
+  pod 'GooglePlacePicker'
+  pod 'GoogleMaps'
 end 
