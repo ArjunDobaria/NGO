@@ -8,6 +8,8 @@
 
 import UIKit
 import MFSideMenu
+import GoogleSignIn
+import FBSDKLoginKit
 
 class SideMenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -20,7 +22,7 @@ class SideMenuViewController: UIViewController, UITableViewDelegate, UITableView
         {
             menuContainerViewController.menuWidth = 400
         }
-        tableData = NSMutableArray(objects: "Item1", "Item2", "Item3", "Item4", "Item5")
+        tableData = NSMutableArray(objects: "Item1", "Item2", "Item3", "Item4", "Logout")
         self.tblview.separatorStyle = UITableViewCellSeparatorStyle.none
         
         // Do any additional setup after loading the view.
@@ -71,14 +73,29 @@ class SideMenuViewController: UIViewController, UITableViewDelegate, UITableView
             rootNav.pushViewController(vc, animated: true)
             break
             
-        case 4:
+        case 3:
             let vc: WebViewController = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
             rootNav.pushViewController(vc, animated: true)
             break
             
-        case 3:
-            let vc: WebViewController = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
-            rootNav.pushViewController(vc, animated: true)
+        case 4:
+                if(UserDefaults.standard.object(forKey: "login") as! String == "fb")
+                {
+                    UserDefaults.standard.set(false, forKey: "isUserLogin")
+                    UserDefaults.standard.synchronize()
+                    let loginManager = FBSDKLoginManager()
+                    loginManager.logOut()
+                    let vc: ViewController = self.storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+                    rootNav.pushViewController(vc, animated: true)
+                }
+                else if(UserDefaults.standard.object(forKey: "login") as! String == "gp")
+                {
+                    UserDefaults.standard.set(false, forKey: "isUserLogin")
+                    UserDefaults.standard.synchronize()
+                    GIDSignIn.sharedInstance().signOut()
+                    let vc: ViewController = self.storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+                    rootNav.pushViewController(vc, animated: true)
+                }
             break
             
         default:

@@ -12,6 +12,7 @@ import GoogleSignIn
 import Google
 import FacebookLogin
 import FBSDKLoginKit
+import Alamofire
 
 class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
     
@@ -20,6 +21,7 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
     @IBOutlet weak var facebookbtn: LoginButton!
     var isLoggin : Bool = false
     var dict : [String : AnyObject]!
+    var Googledict : [String : AnyObject]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,10 +49,13 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
             FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
                 if (error == nil){
                     self.dict = result as! [String : AnyObject]
-                    print(result!)
                     print(self.dict)
+                    UserDefaults.standard.set("fb", forKey: "login")
                     UserDefaults.standard.set(true, forKey: "isUserLogin")
                     UserDefaults.standard.synchronize()
+                    Alamofire.request("http://localhost:3000/register",method: .post, parameters: ["email" : self.dict["name"]!], encoding: JSONEncoding.default).responseJSON { response in
+                        print(response)
+                    }
                     AppDelegate().sharedDelegate().DashbordCall()
                 }
             })
@@ -70,9 +75,14 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
         print("givenName = " , user.profile.givenName)
         print("familyName = " , user.profile.familyName)
         print("email = " , user.profile.email)
-        
+        UserDefaults.standard.set("gp", forKey: "login")
         UserDefaults.standard.set(true, forKey: "isUserLogin")
         UserDefaults.standard.synchronize()
+        
+        Alamofire.request("http://localhost:3000/register",method: .post, parameters: ["email" : user.profile.name], encoding: JSONEncoding.default).responseJSON { response in
+            print(response)
+        }
+        
         AppDelegate().sharedDelegate().DashbordCall()
     }
     

@@ -88,22 +88,22 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         centerview.viewshadow(view: centerview)
         detailscontainerview.viewshadow(view: detailscontainerview)
         
-        detailscontainerview.frame = CGRect.init(x: 16, y: 0, width: UIScreen.main.bounds.width-32, height: subview.frame.height+500)
-        detailscontainerview.backgroundColor = UIColor.white
-        
-        self.subview.addSubview(detailscontainerview)//give color to the view
+//        detailscontainerview.frame = CGRect.init(x: 16, y: 0, width: UIScreen.main.bounds.width-32, height: subview.frame.height+500)
+//        detailscontainerview.backgroundColor = UIColor.white
+//
+//        self.subview.addSubview(detailscontainerview)//give color to the view
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        detailscontainerview.removeFromSuperview()
-        aboutview.removeFromSuperview()
-        previewview.removeFromSuperview()
-        detailscontainerview.frame = CGRect.init(x: 16, y: 0, width: UIScreen.main.bounds.width-32, height: subview.frame.height)
-        detailscontainerview.backgroundColor = UIColor.white     //give color to the view
-        
-        self.subview.addSubview(detailscontainerview)
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        detailscontainerview.removeFromSuperview()
+//        aboutview.removeFromSuperview()
+//        previewview.removeFromSuperview()
+//        detailscontainerview.frame = CGRect.init(x: 16, y: 0, width: UIScreen.main.bounds.width-32, height: subview.frame.height)
+//        detailscontainerview.backgroundColor = UIColor.white     //give color to the view
+//
+//        self.subview.addSubview(detailscontainerview)
+//    }
     
     //MARK:- Helper for Map
 //    func centerMapOnLocation(location: CLLocation) {
@@ -140,12 +140,12 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         ImgHide(img1: menuimg, img2: aboutimg, img3: reviewimg)
         backgroundimg.backgroundColor = UIColor.groupTableViewBackground
         ButtonTitleColor(btn1: menubtn, btn2: reviewbtn, btn3: aboutbtn)
-        detailscontainerview.frame = CGRect.init(x: 16, y: 0, width: UIScreen.main.bounds.width-32, height: subview.frame.height)
-        detailscontainerview.backgroundColor = UIColor.white     //give color to the view
-        
-        self.subview.addSubview(detailscontainerview)
-        aboutview.removeFromSuperview()
-        previewview.removeFromSuperview()
+//        detailscontainerview.frame = CGRect.init(x: 16, y: 0, width: UIScreen.main.bounds.width-32, height: subview.frame.height)
+//        detailscontainerview.backgroundColor = UIColor.white     //give color to the view
+//
+//        self.subview.addSubview(detailscontainerview)
+//        aboutview.removeFromSuperview()
+//        previewview.removeFromSuperview()
     }
     
     @IBAction func aboutbtn(_ sender: Any) {
@@ -154,13 +154,13 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         backgroundimg.backgroundColor = UIColor.white
         ImgHide(img1: aboutimg, img2: menuimg, img3: reviewimg)
         ButtonTitleColor(btn1: aboutbtn, btn2: reviewbtn, btn3: menubtn)
-        detailscontainerview.removeFromSuperview()
-       
-        aboutview.frame = CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: subview.frame.height)
-        aboutview.backgroundColor = UIColor.white
-        self.subview.addSubview(aboutview)
+//        detailscontainerview.removeFromSuperview()
+//
+//        aboutview.frame = CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: subview.frame.height)
+//        aboutview.backgroundColor = UIColor.white
+//        self.subview.addSubview(aboutview)
 //        map()
-        previewview.removeFromSuperview()
+//        previewview.removeFromSuperview()
     }
     
     @IBAction func reviewbtn(_ sender: Any) {
@@ -169,11 +169,11 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         ViewHide(view1: previewview, view2: aboutview, view3: detailscontainerview)
         backgroundimg.backgroundColor = UIColor.white
         ButtonTitleColor(btn1: reviewbtn, btn2: aboutbtn, btn3: menubtn)
-        detailscontainerview.removeFromSuperview()
-        aboutview.removeFromSuperview()
-        previewview.frame = CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: subview.frame.height)
-        previewview.backgroundColor = UIColor.white
-        self.subview.addSubview(previewview)
+//        detailscontainerview.removeFromSuperview()
+//        aboutview.removeFromSuperview()
+//        previewview.frame = CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: subview.frame.height)
+//        previewview.backgroundColor = UIColor.white
+//        self.subview.addSubview(previewview)
     }
     
     @IBAction func maincoursebtn(_ sender: Any) {

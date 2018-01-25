@@ -91,5 +91,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    func encodeDictionaryToString(_ dictionary: NSMutableDictionary) -> String {
+        let parts:NSMutableArray = NSMutableArray()
+        
+        for (key, value) in dictionary {
+            var keyName:String = ""
+            var keyValue:String = ""
+            if let _ = value as? String {
+                keyName = key as! String
+                keyValue = value as! String
+            } else if let _ = value as? Int {
+                keyName = key as! String
+                keyValue = String(format: "%u", (value as AnyObject).doubleValue)
+            }
+            let part:NSString = String(format: "%@=%@", keyName,keyValue) as NSString
+            parts.add(part)
+        }
+        let encodedDictionary:NSString = parts.componentsJoined(by: "&") as NSString;
+        return encodedDictionary as String
+    }
+    
 }
 
