@@ -53,9 +53,14 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
                     UserDefaults.standard.set("fb", forKey: "login")
                     UserDefaults.standard.set(true, forKey: "isUserLogin")
                     UserDefaults.standard.synchronize()
-                    Alamofire.request("http://localhost:3000/register",method: .post, parameters: ["email" : self.dict["name"]!], encoding: JSONEncoding.default).responseJSON { response in
-                        print(response)
-                    }
+
+                    APIManager.sharedInstance.servicePost("http://localhost:3000/register", param: ["email" : self.dict["name"]!], headerParam: [:], successBlock:
+                        {(response) in
+                            print(response)
+                    }, failureBlock:
+                        {(error) in
+                            print(error)
+                    })
                     AppDelegate().sharedDelegate().DashbordCall()
                 }
             })
@@ -79,9 +84,13 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
         UserDefaults.standard.set(true, forKey: "isUserLogin")
         UserDefaults.standard.synchronize()
         
-        Alamofire.request("http://localhost:3000/register",method: .post, parameters: ["email" : user.profile.name], encoding: JSONEncoding.default).responseJSON { response in
-            print(response)
-        }
+        APIManager.sharedInstance.servicePost("http://localhost:3000/register", param: ["email" : user.profile.email], headerParam: [:], successBlock:
+            {(response) in
+                print(response)
+        }, failureBlock:
+            {(error) in
+                print(error)
+        })
         
         AppDelegate().sharedDelegate().DashbordCall()
     }
@@ -109,9 +118,6 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-
 }
 
 

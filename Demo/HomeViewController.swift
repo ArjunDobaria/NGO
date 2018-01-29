@@ -9,37 +9,61 @@
 import UIKit
 import MFSideMenu
 import Alamofire
+import CoreLocation
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
 
     @IBOutlet weak var tblview: UITableView!
+    
+    @IBOutlet weak var activityIndecator: UIActivityIndicatorView!
     var dict : [String : AnyObject]!
     
-    var dictonary:NSArray?
+    var msgArray : NSArray = NSArray()
+    var photoArray : NSDictionary = NSDictionary()
+    
     
     var RPConn : NSURLConnection = NSURLConnection()
     var RPData : NSMutableData = NSMutableData()
     
+    var lat : Double = Double()
+    var lng : Double = Double()
+    
+    var height : Int = Int()
+    var width : Int = Int()
+    var reference : String = String()
+    var name : String = String()
+    
+    var API_KEY : String = "AIzaSyDkWnLbjYJfbRs5tU5Uen2FzEXe0g8W4Ag"
+    
+    var locationManager : CLLocationManager = CLLocationManager()
+    
     let cellSpacingHeight: CGFloat = 5
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        Alamofire.request("http://localhost:3000/home",method: .post, parameters: [:], encoding: JSONEncoding.default).responseJSON { response in
-//            //            print(response.value! as! [String : AnyObject])
-//            self.dict = response.value! as! [String : AnyObject]
-//            self.dictonary = self.dict["msg"] as? NSArray
-//            self.tblview.reloadData()
-//        }
-
-        HomeImg()
-        
+       
         tblview.dataSource = self
         tblview.delegate = self
         tblview.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
+        self.locationManager.requestAlwaysAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
         
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
         // Do any additional setup after loading the view.
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        HomeImg()
+    }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        lat = locValue.latitude
+        lng = locValue.longitude
+        
+    }
     
     @IBAction func SideMenubtn(_ sender: Any) {
         menuContainerViewController.toggleLeftSideMenuCompletion(nil)
@@ -47,7 +71,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     //MARK:- Table vire delegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return msgArray.count
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -60,21 +85,42 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
    
     // create a cell for each table view row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-//        let di : NSDictionary = self.dictonary![indexPath.row] as! NSDictionary
-//        print(di["img"]!)
-        
-        // create a new cell if needed or reuse an old one
+        activityIndecator.stopAnimating()
+        activityIndecator.isHidden = true
+        let di : NSDictionary = self.msgArray[indexPath.row] as! NSDictionary
         let myCell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
-        
+//        myCell.bannerImg.image = UIImage.init(named: di["icon"] as! String)
+        myCell.titlelbl.text = di["name"] as? String
+//        myCell.subtitle1lbl.text = di["mainFood"] as? String
+//        myCell.subtitle2lbl.text = di["favorite"] as? String
         return myCell
-        // set the text from the data model
     }
-    
-    
     
     // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let di : NSDictionary = self.msgArray[indexPath.row] as! NSDictionary
+
+//        UserDefaults.standard.set(di["away"] as? String, forKey: "away")
+//        UserDefaults.standard.set(di["status"] as? String, forKey: "status")
+        UserDefaults.standard.set(di["name"] as? String, forKey: "hotelName")
+        UserDefaults.standard.set(di["vicinity"] as? String, forKey: "address")
+        UserDefaults.standard.set(di["rating"] as! CGFloat, forKey: "rating")
+        let lat : Double = ((di["geometry"] as! NSDictionary)["location"] as! NSDictionary)["lat"] as! Double
+        let lng : Double = ((di["geometry"] as! NSDictionary)["location"] as! NSDictionary)["lng"] as! Double
+        let data = (di["opening_hours"] as! NSDictionary)["open_now"] as! Bool
+        var open : String = String()
+        if(data)
+        {
+            open = "Open"
+        }
+        else
+        {
+            open = "Close"
+        }
+        UserDefaults.standard.set(open as String, forKey: "status")
+        UserDefaults.standard.set(lat as Double, forKey: "lat")
+        UserDefaults.standard.set(lng as Double, forKey: "lng")
+        
         let vc  = self.storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -86,40 +132,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func HomeImg()
     {
-        let request:NSMutableURLRequest = NSMutableURLRequest(url: URL(string: "http://localhost:3000/home")!)
-        request.httpShouldHandleCookies = false
-        request.httpMethod = "POST"
-        request.timeoutInterval = 60.0
-        
-        //        request.setValue(HeaderParameter.REQUEST_TOKEN as? String, forHTTPHeaderField: "Request-token")
-        
-        let sendData = NSMutableDictionary()
-        
-        let postString = AppDelegate().sharedDelegate().encodeDictionaryToString(sendData)
-        
-        let body = NSMutableData()
-        body.append(postString.data(using: String.Encoding.utf8)!)
-        
-        request.httpBody = body as Data
-        
-        RPConn = NSURLConnection(request: request as URLRequest, delegate: self, startImmediately: true)!
-        RPConn.start()
+        activityIndecator.isHidden = false
+        activityIndecator.startAnimating()
+        APIManager.sharedInstance.serviceGet("http://202.47.116.116:8552/nearme", headerParam: [:], successBlock:
+            {(response) in
+//                print(response)
+                self.dict = response as! [String : AnyObject]
+                self.msgArray = self.dict["results"] as! NSArray
+                
+        self.height = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["photos"] as! NSArray)[0] as! NSDictionary)["height"] as! Int
+        self.name = ((self.dict["results"] as! NSArray)[0] as! NSDictionary)["name"] as! String
+        let data = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["geometry"] as! NSDictionary)["location"] as! NSDictionary)["lat"] as? Double
+//        self.reference = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["photos"] as! NSArray)[0] as! NSDictionary)["photo_reference"] as! String
+        self.tblview.reloadData()
+        }, failureBlock: {(error) in
+                print(error)
+        })
     }
-    func connection(_ connection: NSURLConnection, didReceiveResponse response: URLResponse)
-    {
-            RPData = NSMutableData()
-    }
-    
-    func connection(_ connection: NSURLConnection!, didReceiveData conData: Data!) {
-        // Append the recieved chunk of data to our data object
-       
-            RPData.append(conData)
-    }
-    func connectionDidFinishLoading(_ connection: NSURLConnection!)
-    {
-            
-            let jsonResult: NSDictionary = try!(JSONSerialization.jsonObject(with: RPData as Data, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary)
-            print(jsonResult)
-    }
-
 }

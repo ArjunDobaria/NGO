@@ -7,17 +7,24 @@
 //
 
 import UIKit
+import MapKit
+import CoreLocation
+import HCSStarRatingView
 
+class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, CLLocationManagerDelegate{
 
-class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
-
+    @IBOutlet weak var activityIndecator: UIActivityIndicatorView!
     @IBOutlet weak var subview: UIView!
     @IBOutlet weak var centerview: UIView!
     @IBOutlet weak var openclosebtn: UIButton!
     @IBOutlet weak var closebtn: UIButton!
     @IBOutlet weak var favoritebtn: UIButton!
     
-//    @IBOutlet weak var mapview: MKMapView!
+    @IBOutlet weak var nameOfRestaurant: UILabel!
+    @IBOutlet weak var address: UILabel!
+    @IBOutlet weak var away: UILabel!
+    
+    @IBOutlet weak var mapview: MKMapView!
     
     @IBOutlet weak var backgroundimg: UIImageView!
     
@@ -41,21 +48,58 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var dessertbtn: UIButton!
     @IBOutlet weak var soupbtn: UIButton!
     
-//    var locationManager : CLLocationManager    = CLLocationManager()
-//    let newPin = MKPointAnnotation()
+    @IBOutlet weak var ratinglbl: UILabel!
+    @IBOutlet weak var ratingview: HCSStarRatingView!
+    
+    var locationManager : CLLocationManager    = CLLocationManager()
+    let newPin = MKPointAnnotation()
+    
+    var dict : [String : AnyObject]!
+    
+    var msgArray : NSArray = NSArray()
+    
+    var lat : Double = Double()
+    var lng : Double = Double()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        //MARK:- Map
-//        mapview.delegate = self
+        HotelFoodDetails()
         
-      
+        //MARK:- Map
+        mapview.delegate = self
+        
+        self.locationManager.requestAlwaysAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+        
+        ratingview.value = UserDefaults.standard.object(forKey: "rating") as! CGFloat
+        ratinglbl.text = String(describing: UserDefaults.standard.object(forKey: "rating") as! CGFloat)
+        nameOfRestaurant.text = UserDefaults.standard.object(forKey: "hotelName") as? String
+        address.text = UserDefaults.standard.object(forKey: "address") as? String
+        away.text = UserDefaults.standard.object(forKey: "away") as? String
+        openclosebtn.setTitle(UserDefaults.standard.object(forKey: "status") as? String, for: UIControlState.normal)
+        
+        mapview.removeAnnotation(newPin)
+        let coordinates = CLLocationCoordinate2D(latitude: 21.170240, longitude: 72.831061)
+        let span = MKCoordinateSpanMake(0.01, 0.01)
+        let region = MKCoordinateRegionMake(coordinates, span)
+        mapview.region = region
+        newPin.coordinate = coordinates
+        mapview.addAnnotation(newPin)
+        
+//        let mapCenter = CLLocationCoordinate2DMake(20.836864, -156.874269)
+//        let span = MKCoordinateSpanMake(0.1, 0.1)
+//        let region = MKCoordinateRegionMake(mapCenter, span)
+//        mapview.region = region
+        
         
         //MARK:- Ltitude Longitude wise location
         
-//        let initialLocation = CLLocation(latitude: 21.282778, longitude: -157.829444)
-//        centerMapOnLocation(location: initialLocation)
     
         tblview.dataSource = self
         tblview.delegate = self
@@ -85,14 +129,14 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
 
         openclosebtn.layer.cornerRadius = 8
         
-        centerview.viewshadow(view: centerview)
-        detailscontainerview.viewshadow(view: detailscontainerview)
+//        centerview.viewshadow(view: centerview)
+//        detailscontainerview.viewshadow(view: detailscontainerview)
         
 //        detailscontainerview.frame = CGRect.init(x: 16, y: 0, width: UIScreen.main.bounds.width-32, height: subview.frame.height+500)
 //        detailscontainerview.backgroundColor = UIColor.white
 //
 //        self.subview.addSubview(detailscontainerview)//give color to the view
-        
+        distence()
     }
     
 //    override func viewDidAppear(_ animated: Bool) {
@@ -105,32 +149,26 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
 //        self.subview.addSubview(detailscontainerview)
 //    }
     
-    //MARK:- Helper for Map
-//    func centerMapOnLocation(location: CLLocation) {
-//        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
-//                                                                  regionRadius, regionRadius)
-//        mapview.setRegion(coordinateRegion, animated: true)
-//    }
     
-    //MARK:- Map Delegate to add pin on map
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        mapview.removeAnnotation(newPin)
-//
-//        let location = locations.last! as CLLocation
-//
-//        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-//        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-//
-//        //set region on the map
-//        mapview.setRegion(region, animated: true)
-//
-//        newPin.coordinate = location.coordinate
-//        mapview.addAnnotation(newPin)
-//    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        lat = locValue.latitude
+        lng = locValue.longitude
+    }
+    func distence()
+    {
+        let coordinate₀ = CLLocation(latitude: lat, longitude: lng)
+        let coordinate₁ = CLLocation(latitude: UserDefaults.standard.object(forKey: "lat") as! Double, longitude: UserDefaults.standard.object(forKey: "lng") as! Double)
+        
+        let distanceInMeters = coordinate₀.distance(from: coordinate₁) / 1000
+//        let data = distanceInMeters / 1000
+        print("dataaa : " ,distanceInMeters)
     }
     
     //MARK:- TButton action
@@ -179,21 +217,29 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     @IBAction func maincoursebtn(_ sender: Any) {
         FourButtonSelect(btn1: maincoursebtn, btn2: appetizeersbtn, btn3: dessertbtn, btn4: soupbtn)
         FourButtonTitleColor(btn1: maincoursebtn, btn2: appetizeersbtn, btn3: dessertbtn, btn4: soupbtn)
+        self.tblview.reloadData()
+//        self.tblview2.reloadData()
     }
     
     @IBAction func appetizeersbtn(_ sender: Any) {
         FourButtonSelect(btn1: appetizeersbtn, btn2: maincoursebtn, btn3: dessertbtn, btn4: soupbtn)
         FourButtonTitleColor(btn1: appetizeersbtn, btn2: maincoursebtn, btn3: dessertbtn, btn4: soupbtn)
+        self.tblview.reloadData()
+//        self.tblview2.reloadData()
     }
     
     @IBAction func dessertbtn(_ sender: Any) {
         FourButtonSelect(btn1: dessertbtn, btn2: maincoursebtn, btn3: appetizeersbtn, btn4: soupbtn)
         FourButtonTitleColor(btn1: dessertbtn, btn2: maincoursebtn, btn3: appetizeersbtn, btn4: soupbtn)
+        self.tblview.reloadData()
+//        self.tblview2.reloadData()
     }
     
     @IBAction func soupbtn(_ sender: Any) {
         FourButtonSelect(btn1: soupbtn, btn2: maincoursebtn, btn3: appetizeersbtn, btn4: dessertbtn)
         FourButtonTitleColor(btn1: soupbtn, btn2: maincoursebtn, btn3: appetizeersbtn, btn4: dessertbtn)
+        self.tblview.reloadData()
+//        self.tblview2.reloadData()
     }
     
     @IBAction func closeviewbtn(_ sender: Any) {
@@ -206,7 +252,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     //MARK:- Table view delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return msgArray.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -231,15 +277,48 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
     // create a cell for each table view row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell : UITableViewCell = UITableViewCell()
+        activityIndecator.stopAnimating()
+        activityIndecator.isHidden = true
+        let data : NSDictionary = self.msgArray[indexPath.row] as! NSDictionary
+//        var cell : UITableViewCell = UITableViewCell()
         if(tableView == self.tblview2)
         {
-            cell = (tableView.dequeueReusableCell(withIdentifier: "ReviewTableViewCell") as? ReviewTableViewCell)!
+            let cell = (tableView.dequeueReusableCell(withIdentifier: "ReviewTableViewCell") as? ReviewTableViewCell)!
+            
             return cell
         }
-        cell = (tableView.dequeueReusableCell(withIdentifier: "MenuitemsTableViewCell") as? MenuitemsTableViewCell)!
-        
-        return cell
+        else
+        {
+            let cell = (tableView.dequeueReusableCell(withIdentifier: "MenuitemsTableViewCell") as? MenuitemsTableViewCell)!
+            
+            if(maincoursebtn.isSelected)
+            {
+                cell.itemimg.image = UIImage.init(named: data["foodMainCourseImg"] as! String)
+                cell.itemname.text = data["foodMainCourseName"] as? String
+                cell.itemmoney.text = data["foodMainCoursePrice"] as? String
+            }
+            else if(appetizeersbtn.isSelected)
+            {
+                cell.itemimg.image = UIImage.init(named: data["foodAppetizersImg"] as! String)
+                cell.itemname.text = data["foodAppetizersName"] as? String
+                cell.itemmoney.text = data["foodAppetizersPrice"] as? String
+            }
+            else if(dessertbtn.isSelected)
+            {
+                cell.itemimg.image = UIImage.init(named: data["foodDessertImg"] as! String)
+                cell.itemname.text = data["foodDessertName"] as? String
+                cell.itemmoney.text = data["foodDessertPrice"] as? String
+            }
+            else if(soupbtn.isSelected)
+            {
+                cell.itemimg.image = UIImage.init(named: data["foodSoupImg"] as! String)
+                cell.itemname.text = data["foodSoupName"] as? String
+                cell.itemmoney.text = data["foodSoupPrice"] as? String
+            }
+            
+            return cell
+        }
+       
         // set the text from the data model
     }
     
@@ -359,5 +438,52 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
 //        DispatchQueue.main.async {
 //            self.locationManager.startUpdatingLocation()
 //        }
+        
+//        let initialLocation = CLLocation(latitude: 21.282778, longitude: -157.829444)
+//        centerMapOnLocation(location: initialLocation)
+
 //    }
+    
+    //MARK:- Helper for Map
+    //    func centerMapOnLocation(location: CLLocation) {
+    //        mapview.removeAnnotation(newPin)
+    //        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
+    //                                                                  0.01, 0.01)
+    //        mapview.setRegion(coordinateRegion, animated: true)
+    //
+    //    }
+    
+    //MARK:- Map Delegate to add pin on map
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        mapview.removeAnnotation(newPin)
+//
+//        let location = locations.last! as CLLocation
+//
+//        let center = CLLocationCoordinate2D(latitude: 21.282778, longitude: -157.829444)
+//        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+//
+//        //set region on the map
+//        mapview.setRegion(region, animated: true)
+//
+//        newPin.coordinate = location.coordinate
+//        mapview.addAnnotation(newPin)
+//    }
+
+    //MARK :- Service Call
+    func HotelFoodDetails()
+    {
+        activityIndecator.isHidden = false
+        activityIndecator.startAnimating()
+        APIManager.sharedInstance.serviceGet("http://202.47.116.116:8552/hoteldetails", headerParam: [:], successBlock:
+            {(response) in
+                print(response)
+                self.dict = response as! [String : AnyObject]
+                self.msgArray = self.dict["msg"] as! NSArray
+                self.tblview.reloadData()
+                self.tblview2.reloadData()
+        }, failureBlock:
+            {(error) in
+                print(error)
+        })
+    }
 }

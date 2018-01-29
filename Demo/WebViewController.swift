@@ -22,24 +22,7 @@ class WebViewController: UIViewController {
     }
     
     @IBAction func back(_ sender: Any) {
-//        let param : [String : Any] = [
-//            "email" : "arjun@gmail.com"
-//        ]
-        //POST+
-//        Alamofire.request("http://localhost:3000/register",method: .post, parameters: param, encoding: JSONEncoding.default).responseJSON { response in
-//            print(response)
-//        }
-        Alamofire.request("http://localhost:3000/home",method: .post, parameters: [:], encoding: JSONEncoding.default).responseJSON { response in
-//            print(response.value! as! [String : AnyObject])
-            self.dict = response.value! as! [String : AnyObject]
-            self.dictonary = self.dict["msg"] as? NSArray
-            
-            
-            let di : NSDictionary = self.dictonary![0] as! NSDictionary
-            print(di["img"]!)
-        }
-        
-//        _ = self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
