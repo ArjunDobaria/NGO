@@ -7,9 +7,15 @@
 //
 
 import UIKit
+import HCSStarRatingView
 
 class ReviewTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var timelbl: UILabel!
+    @IBOutlet weak var datelbl: UILabel!
+    @IBOutlet weak var usernamelbl: UILabel!
+    @IBOutlet weak var rating: HCSStarRatingView!
+    @IBOutlet weak var reviewlbl: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

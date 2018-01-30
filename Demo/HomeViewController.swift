@@ -10,6 +10,9 @@ import UIKit
 import MFSideMenu
 import Alamofire
 import CoreLocation
+import GooglePlaces
+import GooglePlacePicker
+
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
 
@@ -21,6 +24,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var msgArray : NSArray = NSArray()
     var photoArray : NSDictionary = NSDictionary()
     
+    @IBOutlet weak var nearmebtn: UIButton!
     
     var RPConn : NSURLConnection = NSURLConnection()
     var RPData : NSMutableData = NSMutableData()
@@ -32,7 +36,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var width : Int = Int()
     var reference : String = String()
     var name : String = String()
-    
+    var img : UIImage = UIImage()
     var API_KEY : String = "AIzaSyDkWnLbjYJfbRs5tU5Uen2FzEXe0g8W4Ag"
     
     var locationManager : CLLocationManager = CLLocationManager()
@@ -87,9 +91,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         activityIndecator.stopAnimating()
         activityIndecator.isHidden = true
+        
         let di : NSDictionary = self.msgArray[indexPath.row] as! NSDictionary
+        
+        self.loadFirstPhotoForPlace(placeID: di["place_id"] as! String)
+        
         let myCell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
-//        myCell.bannerImg.image = UIImage.init(named: di["icon"] as! String)
+//        myCell.bannerImg.image = img
         myCell.titlelbl.text = di["name"] as? String
 //        myCell.subtitle1lbl.text = di["mainFood"] as? String
 //        myCell.subtitle2lbl.text = di["favorite"] as? String
@@ -117,6 +125,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         {
             open = "Close"
         }
+        UserDefaults.standard.set(di["place_id"] as! String, forKey: "placeid")
         UserDefaults.standard.set(open as String, forKey: "status")
         UserDefaults.standard.set(lat as Double, forKey: "lat")
         UserDefaults.standard.set(lng as Double, forKey: "lng")
@@ -130,8 +139,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Dispose of any resources that can be recreated.
     }
     
+    
+    @IBAction func nearme(_ sender: Any) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func HomeImg()
     {
+        tblview.isHidden = true
         activityIndecator.isHidden = false
         activityIndecator.startAnimating()
         APIManager.sharedInstance.serviceGet("http://202.47.116.116:8552/nearme", headerParam: [:], successBlock:
@@ -140,13 +156,44 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.dict = response as! [String : AnyObject]
                 self.msgArray = self.dict["results"] as! NSArray
                 
-        self.height = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["photos"] as! NSArray)[0] as! NSDictionary)["height"] as! Int
-        self.name = ((self.dict["results"] as! NSArray)[0] as! NSDictionary)["name"] as! String
-        let data = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["geometry"] as! NSDictionary)["location"] as! NSDictionary)["lat"] as? Double
+                self.height = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["photos"] as! NSArray)[0] as! NSDictionary)["height"] as! Int
+                self.name = ((self.dict["results"] as! NSArray)[0] as! NSDictionary)["name"] as! String
+//                self.loadFirstPhotoForPlace(placeID: ((self.dict["results"] as! NSArray)[0] as! NSDictionary)["place_id"] as! String)
+//        let data = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["geometry"] as! NSDictionary)["location"] as! NSDictionary)["lat"] as? Double
 //        self.reference = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["photos"] as! NSArray)[0] as! NSDictionary)["photo_reference"] as! String
         self.tblview.reloadData()
+                self.tblview.isHidden = false
         }, failureBlock: {(error) in
                 print(error)
         })
     }
+    
+    func loadFirstPhotoForPlace(placeID: String) {
+        GMSPlacesClient.shared().lookUpPhotos(forPlaceID: placeID) { (photos, error) -> Void in
+            if let error = error {
+                // TODO: handle the error.
+                print("Error: \(error.localizedDescription)")
+            } else {
+                if let firstPhoto = photos?.results.first {
+                    print(placeID)
+                    print(firstPhoto)
+                    self.loadImageForMetadata(photoMetadata: firstPhoto)
+                }
+            }
+        }
+    }
+    
+    func loadImageForMetadata(photoMetadata: GMSPlacePhotoMetadata) {
+        GMSPlacesClient.shared().loadPlacePhoto(photoMetadata, callback: {
+            (photo, error) -> Void in
+            if let error = error {
+                // TODO: handle the error.
+                print("Error: \(error.localizedDescription)")
+            } else {
+                self.img = photo!;
+//                let attributedText = photoMetadata.attributions;
+            }
+        })
+    }
+    
 }

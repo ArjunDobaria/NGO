@@ -13,6 +13,7 @@ import HCSStarRatingView
 
 class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, CLLocationManagerDelegate{
 
+    @IBOutlet weak var urlbtn: UIButton!
     @IBOutlet weak var activityIndecator: UIActivityIndicatorView!
     @IBOutlet weak var subview: UIView!
     @IBOutlet weak var centerview: UIView!
@@ -20,6 +21,8 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var closebtn: UIButton!
     @IBOutlet weak var favoritebtn: UIButton!
     
+    @IBOutlet weak var hoteltimelbl: UILabel!
+    @IBOutlet weak var headerRestaurantName: UILabel!
     @IBOutlet weak var nameOfRestaurant: UILabel!
     @IBOutlet weak var address: UILabel!
     @IBOutlet weak var away: UILabel!
@@ -55,16 +58,21 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     let newPin = MKPointAnnotation()
     
     var dict : [String : AnyObject]!
+    var placedict : [String : AnyObject]!
     
     var msgArray : NSArray = NSArray()
+    var resultsArray : NSArray = NSArray()
+    var reviewArray : NSArray = NSArray()
     
     var lat : Double = Double()
     var lng : Double = Double()
+    var placeid : String = String()
+    
+    var distanceInMeters : Double = Double()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         HotelFoodDetails()
-        
         //MARK:- Map
         mapview.delegate = self
         
@@ -80,27 +88,19 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         ratingview.value = UserDefaults.standard.object(forKey: "rating") as! CGFloat
         ratinglbl.text = String(describing: UserDefaults.standard.object(forKey: "rating") as! CGFloat)
         nameOfRestaurant.text = UserDefaults.standard.object(forKey: "hotelName") as? String
+        headerRestaurantName.text = UserDefaults.standard.object(forKey: "hotelName") as? String
         address.text = UserDefaults.standard.object(forKey: "address") as? String
-        away.text = UserDefaults.standard.object(forKey: "away") as? String
         openclosebtn.setTitle(UserDefaults.standard.object(forKey: "status") as? String, for: UIControlState.normal)
         
+        //MARK:- Ltitude Longitude wise location
         mapview.removeAnnotation(newPin)
-        let coordinates = CLLocationCoordinate2D(latitude: 21.170240, longitude: 72.831061)
+        let coordinates = CLLocationCoordinate2D(latitude: UserDefaults.standard.object(forKey: "lat") as! Double, longitude: UserDefaults.standard.object(forKey: "lng") as! Double)
         let span = MKCoordinateSpanMake(0.01, 0.01)
         let region = MKCoordinateRegionMake(coordinates, span)
         mapview.region = region
         newPin.coordinate = coordinates
         mapview.addAnnotation(newPin)
         
-//        let mapCenter = CLLocationCoordinate2DMake(20.836864, -156.874269)
-//        let span = MKCoordinateSpanMake(0.1, 0.1)
-//        let region = MKCoordinateRegionMake(mapCenter, span)
-//        mapview.region = region
-        
-        
-        //MARK:- Ltitude Longitude wise location
-        
-    
         tblview.dataSource = self
         tblview.delegate = self
         
@@ -108,7 +108,6 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         tblview2.delegate = self
         
         tblview.register(UINib(nibName: "MenuitemsTableViewCell", bundle: nil), forCellReuseIdentifier: "MenuitemsTableViewCell")
-//
         tblview2.register(UINib(nibName: "ReviewTableViewCell", bundle: nil), forCellReuseIdentifier: "ReviewTableViewCell")
         
         menubtn.setTitleColor(UIColor.orange, for: UIControlState.normal)
@@ -136,7 +135,9 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
 //        detailscontainerview.backgroundColor = UIColor.white
 //
 //        self.subview.addSubview(detailscontainerview)//give color to the view
-        distence()
+        placeid = UserDefaults.standard.object(forKey: "placeid") as! String
+        
+        PlaceDetails()
     }
     
 //    override func viewDidAppear(_ animated: Bool) {
@@ -160,18 +161,19 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         print("locations = \(locValue.latitude) \(locValue.longitude)")
         lat = locValue.latitude
         lng = locValue.longitude
+        distence()
     }
     func distence()
     {
         let coordinate₀ = CLLocation(latitude: lat, longitude: lng)
         let coordinate₁ = CLLocation(latitude: UserDefaults.standard.object(forKey: "lat") as! Double, longitude: UserDefaults.standard.object(forKey: "lng") as! Double)
         
-        let distanceInMeters = coordinate₀.distance(from: coordinate₁) / 1000
-//        let data = distanceInMeters / 1000
+        distanceInMeters = round(coordinate₀.distance(from: coordinate₁) / 1000)
         print("dataaa : " ,distanceInMeters)
+        away.text = String(distanceInMeters) + "km Away"
     }
     
-    //MARK:- TButton action
+    //MARK:- Button action
     @IBAction func menubtn(_ sender: Any) {
         ButtonSelect(btn1: menubtn, btn2: aboutbtn, btn3: reviewbtn)
         ViewHide(view1: detailscontainerview, view2: previewview, view3: aboutview)
@@ -246,13 +248,29 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         _ = self.navigationController?.popViewController(animated: true)
     }
     
+    
+    @IBAction func webviewshowbtn(_ sender: Any) {
+        let url : String = urlbtn.titleLabel?.text as! String
+        UserDefaults.standard.set(url, forKey: "url")
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
     @IBAction func favoritrbtn(_ sender: Any) {
         //Favorite Hotel
     }
     //MARK:- Table view delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return msgArray.count
+        if(tableView == self.tblview2)
+        {
+            return reviewArray.count
+        }
+        else{
+            return msgArray.count
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -271,24 +289,35 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
             }
             return 100
         }
-        
-        
     }
     
     // create a cell for each table view row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         activityIndecator.stopAnimating()
         activityIndecator.isHidden = true
-        let data : NSDictionary = self.msgArray[indexPath.row] as! NSDictionary
-//        var cell : UITableViewCell = UITableViewCell()
         if(tableView == self.tblview2)
         {
+            let review : NSDictionary = self.reviewArray[indexPath.row] as! NSDictionary
             let cell = (tableView.dequeueReusableCell(withIdentifier: "ReviewTableViewCell") as? ReviewTableViewCell)!
+//            let datendtime = NSDate(timeIntervalSince1970: TimeInterval(review["time"] as! Int))
+            let date = Date(timeIntervalSince1970: TimeInterval(review["time"] as! Int))
             
+            cell.timelbl.text = review["relative_time_description"] as? String
+            if(review["text"] as? String == "")
+            {
+                cell.reviewlbl.text = "No text available"
+            }
+            else{
+                    cell.reviewlbl.text = review["text"] as? String
+            }
+            
+            cell.usernamelbl.text = review["author_name"] as? String
+            cell.rating.value = review["rating"] as! CGFloat
             return cell
         }
         else
         {
+            let data : NSDictionary = self.msgArray[indexPath.row] as! NSDictionary
             let cell = (tableView.dequeueReusableCell(withIdentifier: "MenuitemsTableViewCell") as? MenuitemsTableViewCell)!
             
             if(maincoursebtn.isSelected)
@@ -472,6 +501,8 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     //MARK :- Service Call
     func HotelFoodDetails()
     {
+        tblview.isHidden = true
+        tblview2.isHidden = true
         activityIndecator.isHidden = false
         activityIndecator.startAnimating()
         APIManager.sharedInstance.serviceGet("http://202.47.116.116:8552/hoteldetails", headerParam: [:], successBlock:
@@ -479,6 +510,29 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
                 print(response)
                 self.dict = response as! [String : AnyObject]
                 self.msgArray = self.dict["msg"] as! NSArray
+                self.tblview.reloadData()
+                self.tblview2.reloadData()
+                self.tblview2.isHidden = false
+                self.tblview.isHidden = false
+        }, failureBlock:
+            {(error) in
+                print(error)
+        })
+    }
+    
+    func PlaceDetails()
+    {
+        activityIndecator.isHidden = false
+        activityIndecator.startAnimating()
+        APIManager.sharedInstance.serviceGet("https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyDkWnLbjYJfbRs5tU5Uen2FzEXe0g8W4Ag&placeid="+placeid , headerParam: [:], successBlock:
+            {(response) in
+//                print(response)
+                self.placedict = response as! [String : AnyObject]
+                self.reviewArray = (self.placedict["result"] as! NSDictionary)["reviews"] as! NSArray
+                let times : String = (self.placedict["result"] as! NSDictionary)["url"] as! String               
+                self.urlbtn.setTitle(times, for: UIControlState.normal)
+                let data = (self.placedict["result"] as! NSDictionary)["types"] as! NSArray
+                print(data)
                 self.tblview.reloadData()
                 self.tblview2.reloadData()
         }, failureBlock:

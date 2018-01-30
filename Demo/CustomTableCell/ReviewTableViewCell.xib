@@ -26,11 +26,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eSD-Zu-RoD">
                                 <rect key="frame" x="10" y="8" width="189" height="17"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="08.30" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mHR-4V-W4C">
-                                        <rect key="frame" x="0.0" y="0.0" width="35" height="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="08.30" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mHR-4V-W4C">
+                                        <rect key="frame" x="0.0" y="0.0" width="95" height="17"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="35" id="TsF-99-O7d">
-                                                <variation key="heightClass=regular-widthClass=regular" constant="40"/>
+                                            <constraint firstAttribute="width" constant="95" id="TsF-99-O7d">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="100"/>
                                             </constraint>
                                             <constraint firstAttribute="height" constant="17" id="XMT-ML-qMj">
                                                 <variation key="heightClass=regular-widthClass=regular" constant="20"/>
@@ -38,23 +38,6 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                        <variation key="heightClass=regular-widthClass=regular">
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        </variation>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12.06.2017" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qbc-WJ-Q6u">
-                                        <rect key="frame" x="38" y="0.0" width="65" height="17"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="65" id="7LK-qd-oBY">
-                                                <variation key="heightClass=regular-widthClass=regular" constant="70"/>
-                                            </constraint>
-                                            <constraint firstAttribute="height" constant="17" id="8qA-vf-3we">
-                                                <variation key="heightClass=regular-widthClass=regular" constant="20"/>
-                                            </constraint>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                         <variation key="heightClass=regular-widthClass=regular">
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -77,48 +60,49 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         </variation>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Eo-Ne-ljk">
-                                        <rect key="frame" x="116" y="0.0" width="73" height="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Eo-Ne-ljk">
+                                        <rect key="frame" x="116" y="0.0" width="92" height="17"/>
                                         <constraints>
+                                            <constraint firstAttribute="width" constant="92" id="V77-54-s6m">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="120"/>
+                                            </constraint>
                                             <constraint firstAttribute="height" constant="17" id="Yq5-Ms-viH">
                                                 <variation key="heightClass=regular-widthClass=regular" constant="20"/>
                                             </constraint>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                         <variation key="heightClass=regular-widthClass=regular">
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         </variation>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="0Eo-Ne-ljk" firstAttribute="leading" secondItem="LEv-el-MJh" secondAttribute="trailing" constant="3" id="00L-Mr-9hY">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="5"/>
+                                    </constraint>
                                     <constraint firstItem="mHR-4V-W4C" firstAttribute="top" secondItem="eSD-Zu-RoD" secondAttribute="top" id="0q1-an-e1U">
                                         <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                                     </constraint>
                                     <constraint firstItem="mHR-4V-W4C" firstAttribute="leading" secondItem="eSD-Zu-RoD" secondAttribute="leading" id="3dA-al-jyN">
                                         <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                                     </constraint>
-                                    <constraint firstItem="LEv-el-MJh" firstAttribute="leading" secondItem="Qbc-WJ-Q6u" secondAttribute="trailing" id="4D0-ka-Vkh">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
-                                    </constraint>
-                                    <constraint firstAttribute="height" constant="17" id="7ok-KS-eDi"/>
-                                    <constraint firstItem="Qbc-WJ-Q6u" firstAttribute="top" secondItem="eSD-Zu-RoD" secondAttribute="top" id="DIx-mt-rcx">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                                    <constraint firstAttribute="height" constant="17" id="7ok-KS-eDi">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="17"/>
                                     </constraint>
                                     <constraint firstItem="0Eo-Ne-ljk" firstAttribute="top" secondItem="eSD-Zu-RoD" secondAttribute="top" id="Ps1-z1-Cq7">
                                         <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                                     </constraint>
-                                    <constraint firstItem="0Eo-Ne-ljk" firstAttribute="leading" secondItem="LEv-el-MJh" secondAttribute="trailing" constant="3" id="Qac-nc-IQq">
+                                    <constraint firstItem="LEv-el-MJh" firstAttribute="leading" secondItem="mHR-4V-W4C" secondAttribute="trailing" constant="8" id="Wfs-jJ-Rhk">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="10"/>
+                                    </constraint>
+                                    <constraint firstAttribute="trailing" secondItem="0Eo-Ne-ljk" secondAttribute="trailing" constant="-19" id="fe3-qN-YXS">
                                         <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                                     </constraint>
-                                    <constraint firstAttribute="trailing" secondItem="0Eo-Ne-ljk" secondAttribute="trailing" id="fe3-qN-YXS">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
-                                    </constraint>
-                                    <constraint firstAttribute="width" constant="189" id="r8a-XS-Xr6"/>
-                                    <constraint firstItem="Qbc-WJ-Q6u" firstAttribute="leading" secondItem="mHR-4V-W4C" secondAttribute="trailing" constant="3" id="sEO-MU-fG7">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                                    <constraint firstAttribute="width" constant="189" id="r8a-XS-Xr6">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="350"/>
                                     </constraint>
                                     <constraint firstItem="LEv-el-MJh" firstAttribute="top" secondItem="eSD-Zu-RoD" secondAttribute="top" id="vmE-GR-Tv1">
                                         <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
@@ -179,7 +163,9 @@
                             <constraint firstItem="ulB-mM-b15" firstAttribute="top" secondItem="FUZ-bJ-YPP" secondAttribute="topMargin" id="akW-zM-L0l">
                                 <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                             </constraint>
-                            <constraint firstItem="eSD-Zu-RoD" firstAttribute="leading" secondItem="FUZ-bJ-YPP" secondAttribute="leadingMargin" constant="2" id="pFS-pT-c7t"/>
+                            <constraint firstItem="eSD-Zu-RoD" firstAttribute="leading" secondItem="FUZ-bJ-YPP" secondAttribute="leadingMargin" constant="2" id="pFS-pT-c7t">
+                                <variation key="heightClass=regular-widthClass=regular" constant="5"/>
+                            </constraint>
                             <constraint firstItem="1Rl-IT-T5G" firstAttribute="leading" secondItem="FUZ-bJ-YPP" secondAttribute="leadingMargin" constant="2" id="yar-cn-x8J">
                                 <variation key="heightClass=regular-widthClass=regular" constant="2"/>
                             </constraint>
@@ -195,6 +181,12 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="rating" destination="ulB-mM-b15" id="R7I-fz-CnV"/>
+                <outlet property="reviewlbl" destination="1Rl-IT-T5G" id="ho3-96-4pX"/>
+                <outlet property="timelbl" destination="mHR-4V-W4C" id="QdB-Ol-KfD"/>
+                <outlet property="usernamelbl" destination="0Eo-Ne-ljk" id="Tof-iw-Usx"/>
+            </connections>
             <point key="canvasLocation" x="84" y="58.5"/>
         </tableViewCell>
     </objects>
