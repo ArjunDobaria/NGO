@@ -101,7 +101,7 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
     
     @IBAction func facebookbtn(_ sender: Any) {
         let loginManager = LoginManager()
-        loginManager.logIn(readPermissions : [ .publicProfile ], viewController: self) { loginResult in
+        loginManager.logIn(readPermissions : [ .publicProfile, .email, .userLocation ], viewController: self) { loginResult in
             switch loginResult {
             case .failed(let error):
                 print(error)

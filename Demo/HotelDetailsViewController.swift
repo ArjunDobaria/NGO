@@ -67,6 +67,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     var lat : Double = Double()
     var lng : Double = Double()
     var placeid : String = String()
+    var fonts : UIFont = UIFont(name: "Helvetica", size: 20.0)!
     
     var distanceInMeters : Double = Double()
     
@@ -101,6 +102,8 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         newPin.coordinate = coordinates
         mapview.addAnnotation(newPin)
         
+//        print(heightForView(label: self.hoteltimelbl, text: " let left = UISwipeGestureRecognizer(target: self, action: #selector(leftside))right.direction = UISwipeGestureRecognizerDirection.leftdetailscontainerview.addGestureRecognizer(left)"))term
+        
         tblview.dataSource = self
         tblview.delegate = self
         
@@ -128,6 +131,8 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
 
         openclosebtn.layer.cornerRadius = 8
         
+        
+        
 //        centerview.viewshadow(view: centerview)
 //        detailscontainerview.viewshadow(view: detailscontainerview)
         
@@ -154,6 +159,15 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func heightForView(label : UILabel, text : String) -> CGFloat {
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = fonts
+        label.text = text
+        label.sizeToFit()
+        return label.frame.height
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -276,6 +290,8 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if(tableView == self.tblview2)
         {
+            let cell = (tableView.dequeueReusableCell(withIdentifier: "ReviewTableViewCell") as? ReviewTableViewCell)!
+            let review : NSDictionary = self.reviewArray[indexPath.row] as! NSDictionary
             if(UIDevice.current.userInterfaceIdiom == .pad)
             {
                 return 120
@@ -313,6 +329,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
             
             cell.usernamelbl.text = review["author_name"] as? String
             cell.rating.value = review["rating"] as! CGFloat
+            
             return cell
         }
         else

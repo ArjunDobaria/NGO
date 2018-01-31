@@ -32,6 +32,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var lat : Double = Double()
     var lng : Double = Double()
     
+    var refresh : UIRefreshControl = UIRefreshControl()
+    
     var height : Int = Int()
     var width : Int = Int()
     var reference : String = String()
@@ -44,13 +46,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     let cellSpacingHeight: CGFloat = 5
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        HomeImg()
         tblview.dataSource = self
         tblview.delegate = self
+        tblview.addSubview(refresh)
         tblview.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.requestWhenInUseAuthorization()
-        
+        refresh.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
@@ -59,6 +62,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
+        HomeImg()
+//        tblview.reloadData()
+    }
+    @objc private func refreshWeatherData(_ sender: Any) {
+        // Fetch Weather Data
         HomeImg()
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -89,12 +97,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
    
     // create a cell for each table view row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        refresh.endRefreshing()
         activityIndecator.stopAnimating()
         activityIndecator.isHidden = true
         
         let di : NSDictionary = self.msgArray[indexPath.row] as! NSDictionary
-        
-        self.loadFirstPhotoForPlace(placeID: di["place_id"] as! String)
         
         let myCell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
 //        myCell.bannerImg.image = img
@@ -147,7 +154,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func HomeImg()
     {
-        tblview.isHidden = true
+//        tblview.isHidden = true
         activityIndecator.isHidden = false
         activityIndecator.startAnimating()
         APIManager.sharedInstance.serviceGet("http://202.47.116.116:8552/nearme", headerParam: [:], successBlock:
@@ -162,38 +169,38 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 //        let data = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["geometry"] as! NSDictionary)["location"] as! NSDictionary)["lat"] as? Double
 //        self.reference = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["photos"] as! NSArray)[0] as! NSDictionary)["photo_reference"] as! String
         self.tblview.reloadData()
-                self.tblview.isHidden = false
+//        self.tblview.isHidden = false
         }, failureBlock: {(error) in
                 print(error)
         })
     }
     
-    func loadFirstPhotoForPlace(placeID: String) {
-        GMSPlacesClient.shared().lookUpPhotos(forPlaceID: placeID) { (photos, error) -> Void in
-            if let error = error {
-                // TODO: handle the error.
-                print("Error: \(error.localizedDescription)")
-            } else {
-                if let firstPhoto = photos?.results.first {
-                    print(placeID)
-                    print(firstPhoto)
-                    self.loadImageForMetadata(photoMetadata: firstPhoto)
-                }
-            }
-        }
-    }
-    
-    func loadImageForMetadata(photoMetadata: GMSPlacePhotoMetadata) {
-        GMSPlacesClient.shared().loadPlacePhoto(photoMetadata, callback: {
-            (photo, error) -> Void in
-            if let error = error {
-                // TODO: handle the error.
-                print("Error: \(error.localizedDescription)")
-            } else {
-                self.img = photo!;
-//                let attributedText = photoMetadata.attributions;
-            }
-        })
-    }
+//    func loadFirstPhotoForPlace(placeID: String) {
+//        GMSPlacesClient.shared().lookUpPhotos(forPlaceID: placeID) { (photos, error) -> Void in
+//            if let error = error {
+//                // TODO: handle the error.
+//                print("Error: \(error.localizedDescription)")
+//            } else {
+//                if let firstPhoto = photos?.results.first {
+//                    print(placeID)
+//                    print(firstPhoto)
+//                    self.loadImageForMetadata(photoMetadata: firstPhoto)
+//                }
+//            }
+//        }
+//    }
+//
+//    func loadImageForMetadata(photoMetadata: GMSPlacePhotoMetadata) {
+//        GMSPlacesClient.shared().loadPlacePhoto(photoMetadata, callback: {
+//            (photo, error) -> Void in
+//            if let error = error {
+//                // TODO: handle the error.
+//                print("Error: \(error.localizedDescription)")
+//            } else {
+//                self.img = photo!;
+////                let attributedText = photoMetadata.attributions;
+//            }
+//        })
+//    }
     
 }

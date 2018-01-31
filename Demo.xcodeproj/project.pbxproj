@@ -10,6 +10,9 @@
 		0C1A58D1200F57E900AF8F76 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1A58CF200F57E900AF8F76 /* HomeTableViewCell.swift */; };
 		0C1A58D2200F57E900AF8F76 /* HomeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C1A58D0200F57E900AF8F76 /* HomeTableViewCell.xib */; };
 		0C1A58D4200F622A00AF8F76 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1A58D3200F622A00AF8F76 /* HomeViewController.swift */; };
+		0C1B31262021D7D400257591 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1B31252021D7D400257591 /* TableViewController.swift */; };
+		0C1B31292021DDD600257591 /* CellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1B31272021DDD600257591 /* CellTableViewCell.swift */; };
+		0C1B312A2021DDD600257591 /* CellTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C1B31282021DDD600257591 /* CellTableViewCell.xib */; };
 		0C21A638200CDB9900030012 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C21A637200CDB9900030012 /* AppDelegate.swift */; };
 		0C21A63A200CDB9900030012 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C21A639200CDB9900030012 /* ViewController.swift */; };
 		0C21A63D200CDB9900030012 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C21A63B200CDB9900030012 /* Main.storyboard */; };
@@ -55,6 +58,9 @@
 		0C1A58CF200F57E900AF8F76 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		0C1A58D0200F57E900AF8F76 /* HomeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableViewCell.xib; sourceTree = "<group>"; };
 		0C1A58D3200F622A00AF8F76 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		0C1B31252021D7D400257591 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		0C1B31272021DDD600257591 /* CellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellTableViewCell.swift; sourceTree = "<group>"; };
+		0C1B31282021DDD600257591 /* CellTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CellTableViewCell.xib; sourceTree = "<group>"; };
 		0C21A634200CDB9900030012 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C21A637200CDB9900030012 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 1; };
 		0C21A639200CDB9900030012 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -133,6 +139,8 @@
 				0CBBDFDA2015A6A10088C403 /* ReviewTableViewCell.xib */,
 				0CA44DD520175EF800D313B2 /* SideMenuTableViewCell.swift */,
 				0CA44DD620175EF800D313B2 /* SideMenuTableViewCell.xib */,
+				0C1B31272021DDD600257591 /* CellTableViewCell.swift */,
+				0C1B31282021DDD600257591 /* CellTableViewCell.xib */,
 			);
 			path = CustomTableCell;
 			sourceTree = "<group>";
@@ -185,6 +193,7 @@
 				0CA44DD32017576900D313B2 /* SideMenuViewController.swift */,
 				0CBBDFDD2015BF800088C403 /* GoogleService-Info.plist */,
 				0CE33DB6201853D0000CA3DF /* WebViewController.swift */,
+				0C1B31252021D7D400257591 /* TableViewController.swift */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -358,6 +367,7 @@
 				0C1A58D2200F57E900AF8F76 /* HomeTableViewCell.xib in Resources */,
 				0C21A63D200CDB9900030012 /* Main.storyboard in Resources */,
 				0CBBDFDE2015BF800088C403 /* GoogleService-Info.plist in Resources */,
+				0C1B312A2021DDD600257591 /* CellTableViewCell.xib in Resources */,
 				0CA44DD820175EF800D313B2 /* SideMenuTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -468,7 +478,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C1B31292021DDD600257591 /* CellTableViewCell.swift in Sources */,
 				0CAC53FC201701E100D9A125 /* GlobalConstant.swift in Sources */,
+				0C1B31262021D7D400257591 /* TableViewController.swift in Sources */,
 				0CBA91B520104FB10067D675 /* Utility.swift in Sources */,
 				0CBBDFDB2015A6A10088C403 /* ReviewTableViewCell.swift in Sources */,
 				0C1A58D1200F57E900AF8F76 /* HomeTableViewCell.swift in Sources */,
