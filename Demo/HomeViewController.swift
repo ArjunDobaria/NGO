@@ -63,10 +63,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     override func viewWillAppear(_ animated: Bool) {
         HomeImg()
-//        tblview.reloadData()
     }
     @objc private func refreshWeatherData(_ sender: Any) {
-        // Fetch Weather Data
         HomeImg()
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -104,19 +102,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let di : NSDictionary = self.msgArray[indexPath.row] as! NSDictionary
         
         let myCell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
-//        myCell.bannerImg.image = img
         myCell.titlelbl.text = di["name"] as? String
-//        myCell.subtitle1lbl.text = di["mainFood"] as? String
-//        myCell.subtitle2lbl.text = di["favorite"] as? String
         return myCell
     }
     
     // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let di : NSDictionary = self.msgArray[indexPath.row] as! NSDictionary
-
-//        UserDefaults.standard.set(di["away"] as? String, forKey: "away")
-//        UserDefaults.standard.set(di["status"] as? String, forKey: "status")
         UserDefaults.standard.set(di["name"] as? String, forKey: "hotelName")
         UserDefaults.standard.set(di["vicinity"] as? String, forKey: "address")
         UserDefaults.standard.set(di["rating"] as! CGFloat, forKey: "rating")
@@ -154,53 +146,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func HomeImg()
     {
-//        tblview.isHidden = true
         activityIndecator.isHidden = false
         activityIndecator.startAnimating()
         APIManager.sharedInstance.serviceGet("http://202.47.116.116:8552/nearme", headerParam: [:], successBlock:
             {(response) in
-//                print(response)
                 self.dict = response as! [String : AnyObject]
                 self.msgArray = self.dict["results"] as! NSArray
                 
                 self.height = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["photos"] as! NSArray)[0] as! NSDictionary)["height"] as! Int
                 self.name = ((self.dict["results"] as! NSArray)[0] as! NSDictionary)["name"] as! String
-//                self.loadFirstPhotoForPlace(placeID: ((self.dict["results"] as! NSArray)[0] as! NSDictionary)["place_id"] as! String)
-//        let data = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["geometry"] as! NSDictionary)["location"] as! NSDictionary)["lat"] as? Double
-//        self.reference = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["photos"] as! NSArray)[0] as! NSDictionary)["photo_reference"] as! String
-        self.tblview.reloadData()
-//        self.tblview.isHidden = false
+                self.tblview.reloadData()
         }, failureBlock: {(error) in
                 print(error)
         })
     }
-    
-//    func loadFirstPhotoForPlace(placeID: String) {
-//        GMSPlacesClient.shared().lookUpPhotos(forPlaceID: placeID) { (photos, error) -> Void in
-//            if let error = error {
-//                // TODO: handle the error.
-//                print("Error: \(error.localizedDescription)")
-//            } else {
-//                if let firstPhoto = photos?.results.first {
-//                    print(placeID)
-//                    print(firstPhoto)
-//                    self.loadImageForMetadata(photoMetadata: firstPhoto)
-//                }
-//            }
-//        }
-//    }
-//
-//    func loadImageForMetadata(photoMetadata: GMSPlacePhotoMetadata) {
-//        GMSPlacesClient.shared().loadPlacePhoto(photoMetadata, callback: {
-//            (photo, error) -> Void in
-//            if let error = error {
-//                // TODO: handle the error.
-//                print("Error: \(error.localizedDescription)")
-//            } else {
-//                self.img = photo!;
-////                let attributedText = photoMetadata.attributions;
-//            }
-//        })
-//    }
-    
 }

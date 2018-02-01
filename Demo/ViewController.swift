@@ -13,8 +13,10 @@ import Google
 import FacebookLogin
 import FBSDKLoginKit
 import Alamofire
+import UserNotifications
 
-class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
+
+class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, UNUserNotificationCenterDelegate {
     
 
     @IBOutlet weak var googlebtn: GIDSignInButton!
@@ -22,10 +24,12 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
     var isLoggin : Bool = false
     var dict : [String : AnyObject]!
     var Googledict : [String : AnyObject]!
+//    var center = UNUserNotificationCenter.current()
+//    let notificationDelegate = UYLNotificationDelegate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+//        UNUserNotificationCenter.current().delegate = self
         var error : NSError?
 
         GGLContext.sharedInstance().configureWithError(&error)
@@ -34,12 +38,74 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
             print(error ?? "google error")
             return
         }
+        
+        if let accessToken = FBSDKAccessToken.current() {
+            print(accessToken)
+        }
 
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
         
         facebookbtn = LoginButton(readPermissions: [ .publicProfile, .email, .userFriends ])
     }
+    
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//        completionHandler([.alert])
+//    }
+    // MARK: - Private Methods
+//    private func requestAuthorization(completionHandler: @escaping (_ success: Bool) -> ()) {
+//        // Request Authorization
+//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
+//            if let error = error {
+//                print("Request Authorization Failed (\(error), \(error.localizedDescription))")
+//            }
+//
+//            completionHandler(success)
+//        }
+//    }
+    
+//    private func scheduleLocalNotification() {
+//        // Create Notification Content
+//        let notificationContent = UNMutableNotificationContent()
+//
+//        // Configure Notification Content
+//        notificationContent.title = "This is From Demo"
+//        notificationContent.subtitle = "Local Notifications"
+//        notificationContent.badge = 1
+//        notificationContent.body = "This application is about to give some amout from your food bill to the NGO trusts."
+//
+//        // Add Trigger
+//        let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 1.0, repeats: false)
+//
+//        // Create Notification Request
+//        let notificationRequest = UNNotificationRequest(identifier: "cocoacasts_local_notification", content: notificationContent, trigger: notificationTrigger)
+//
+//        // Add Request to User Notification Center
+//        UNUserNotificationCenter.current().add(notificationRequest) { (error) in
+//            if let error = error {
+//                print("Unable to Add Notification Request (\(error), \(error.localizedDescription))")
+//            }
+//        }
+//    }
+//
+//    @IBAction func pressHerebtn(_ sender: Any) {
+//
+//        // Request Notification Settings
+//        UNUserNotificationCenter.current().getNotificationSettings { (notificationSettings) in
+//            switch notificationSettings.authorizationStatus {
+//            case .notDetermined:
+//                self.requestAuthorization(completionHandler: { (success) in
+//                    guard success else { return }
+//
+//                    // Schedule Local Notification
+//                })
+//            case .authorized:
+//                self.scheduleLocalNotification()
+//            case .denied:
+//                print("Application Not Allowed to Display Notifications")
+//            }
+//        }
+//    }
     
     
     //function is fetching the user data
@@ -100,6 +166,19 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
     }
     
     @IBAction func facebookbtn(_ sender: Any) {
+//        let loginManager = LoginManager()
+//        loginManager.logIn(readPermissions : [ .publicProfile, .email, .userLocation ], viewController: self) { loginResult in
+//            switch loginResult {
+//            case .failed(let error):
+//                print(error)
+//            case .cancelled:
+//                print("User cancelled login.")
+////            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
+//            case .success:
+//                self.getFBUserData()
+//            }
+//        }
+        
         let loginManager = LoginManager()
         loginManager.logIn(readPermissions : [ .publicProfile, .email, .userLocation ], viewController: self) { loginResult in
             switch loginResult {
@@ -107,8 +186,8 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
                 print(error)
             case .cancelled:
                 print("User cancelled login.")
-//            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
-            case .success:
+            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
+                print("Logged in!")
                 self.getFBUserData()
             }
         }

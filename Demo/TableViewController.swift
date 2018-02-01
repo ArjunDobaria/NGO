@@ -19,9 +19,6 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        tblview.sectionHeaderHeight = 60
-//        tblview.sectionFooterHeight = 60
 
         tblview.tableFooterView = footerView
         tblview.tableHeaderView = headerView

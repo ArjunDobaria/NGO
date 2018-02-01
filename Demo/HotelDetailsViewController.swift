@@ -73,6 +73,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         HotelFoodDetails()
         //MARK:- Map
         mapview.delegate = self
@@ -121,40 +122,20 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         
         maincoursebtn.isSelected = true
         
-//        let right = UISwipeGestureRecognizer(target: self, action: #selector(rightside))
-//        right.direction = UISwipeGestureRecognizerDirection.right
-//        detailscontainerview.addGestureRecognizer(right)
-//
-//        let left = UISwipeGestureRecognizer(target: self, action: #selector(leftside))
-//        right.direction = UISwipeGestureRecognizerDirection.left
-//        detailscontainerview.addGestureRecognizer(left)
+        let right = UISwipeGestureRecognizer(target: self, action: #selector(rightside))
+        right.direction = UISwipeGestureRecognizerDirection.right
+        detailscontainerview.addGestureRecognizer(right)
+
+        let left = UISwipeGestureRecognizer(target: self, action: #selector(leftside))
+        right.direction = UISwipeGestureRecognizerDirection.left
+        detailscontainerview.addGestureRecognizer(left)
 
         openclosebtn.layer.cornerRadius = 8
         
-        
-        
-//        centerview.viewshadow(view: centerview)
-//        detailscontainerview.viewshadow(view: detailscontainerview)
-        
-//        detailscontainerview.frame = CGRect.init(x: 16, y: 0, width: UIScreen.main.bounds.width-32, height: subview.frame.height+500)
-//        detailscontainerview.backgroundColor = UIColor.white
-//
-//        self.subview.addSubview(detailscontainerview)//give color to the view
         placeid = UserDefaults.standard.object(forKey: "placeid") as! String
         
         PlaceDetails()
     }
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        detailscontainerview.removeFromSuperview()
-//        aboutview.removeFromSuperview()
-//        previewview.removeFromSuperview()
-//        detailscontainerview.frame = CGRect.init(x: 16, y: 0, width: UIScreen.main.bounds.width-32, height: subview.frame.height)
-//        detailscontainerview.backgroundColor = UIColor.white     //give color to the view
-//
-//        self.subview.addSubview(detailscontainerview)
-//    }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -194,12 +175,6 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         ImgHide(img1: menuimg, img2: aboutimg, img3: reviewimg)
         backgroundimg.backgroundColor = UIColor.groupTableViewBackground
         ButtonTitleColor(btn1: menubtn, btn2: reviewbtn, btn3: aboutbtn)
-//        detailscontainerview.frame = CGRect.init(x: 16, y: 0, width: UIScreen.main.bounds.width-32, height: subview.frame.height)
-//        detailscontainerview.backgroundColor = UIColor.white     //give color to the view
-//
-//        self.subview.addSubview(detailscontainerview)
-//        aboutview.removeFromSuperview()
-//        previewview.removeFromSuperview()
     }
     
     @IBAction func aboutbtn(_ sender: Any) {
@@ -208,13 +183,6 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         backgroundimg.backgroundColor = UIColor.white
         ImgHide(img1: aboutimg, img2: menuimg, img3: reviewimg)
         ButtonTitleColor(btn1: aboutbtn, btn2: reviewbtn, btn3: menubtn)
-//        detailscontainerview.removeFromSuperview()
-//
-//        aboutview.frame = CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: subview.frame.height)
-//        aboutview.backgroundColor = UIColor.white
-//        self.subview.addSubview(aboutview)
-//        map()
-//        previewview.removeFromSuperview()
     }
     
     @IBAction func reviewbtn(_ sender: Any) {
@@ -223,39 +191,30 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         ViewHide(view1: previewview, view2: aboutview, view3: detailscontainerview)
         backgroundimg.backgroundColor = UIColor.white
         ButtonTitleColor(btn1: reviewbtn, btn2: aboutbtn, btn3: menubtn)
-//        detailscontainerview.removeFromSuperview()
-//        aboutview.removeFromSuperview()
-//        previewview.frame = CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: subview.frame.height)
-//        previewview.backgroundColor = UIColor.white
-//        self.subview.addSubview(previewview)
     }
     
     @IBAction func maincoursebtn(_ sender: Any) {
         FourButtonSelect(btn1: maincoursebtn, btn2: appetizeersbtn, btn3: dessertbtn, btn4: soupbtn)
         FourButtonTitleColor(btn1: maincoursebtn, btn2: appetizeersbtn, btn3: dessertbtn, btn4: soupbtn)
         self.tblview.reloadData()
-//        self.tblview2.reloadData()
     }
     
     @IBAction func appetizeersbtn(_ sender: Any) {
         FourButtonSelect(btn1: appetizeersbtn, btn2: maincoursebtn, btn3: dessertbtn, btn4: soupbtn)
         FourButtonTitleColor(btn1: appetizeersbtn, btn2: maincoursebtn, btn3: dessertbtn, btn4: soupbtn)
         self.tblview.reloadData()
-//        self.tblview2.reloadData()
     }
     
     @IBAction func dessertbtn(_ sender: Any) {
         FourButtonSelect(btn1: dessertbtn, btn2: maincoursebtn, btn3: appetizeersbtn, btn4: soupbtn)
         FourButtonTitleColor(btn1: dessertbtn, btn2: maincoursebtn, btn3: appetizeersbtn, btn4: soupbtn)
         self.tblview.reloadData()
-//        self.tblview2.reloadData()
     }
     
     @IBAction func soupbtn(_ sender: Any) {
         FourButtonSelect(btn1: soupbtn, btn2: maincoursebtn, btn3: appetizeersbtn, btn4: dessertbtn)
         FourButtonTitleColor(btn1: soupbtn, btn2: maincoursebtn, btn3: appetizeersbtn, btn4: dessertbtn)
         self.tblview.reloadData()
-//        self.tblview2.reloadData()
     }
     
     @IBAction func closeviewbtn(_ sender: Any) {
@@ -264,7 +223,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
     
     @IBAction func webviewshowbtn(_ sender: Any) {
-        let url : String = urlbtn.titleLabel?.text as! String
+        let url : String = (urlbtn.titleLabel?.text)!
         UserDefaults.standard.set(url, forKey: "url")
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
         self.navigationController?.pushViewController(vc, animated: true)
@@ -290,8 +249,6 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if(tableView == self.tblview2)
         {
-            let cell = (tableView.dequeueReusableCell(withIdentifier: "ReviewTableViewCell") as? ReviewTableViewCell)!
-            let review : NSDictionary = self.reviewArray[indexPath.row] as! NSDictionary
             if(UIDevice.current.userInterfaceIdiom == .pad)
             {
                 return 120
@@ -316,7 +273,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
             let review : NSDictionary = self.reviewArray[indexPath.row] as! NSDictionary
             let cell = (tableView.dequeueReusableCell(withIdentifier: "ReviewTableViewCell") as? ReviewTableViewCell)!
 //            let datendtime = NSDate(timeIntervalSince1970: TimeInterval(review["time"] as! Int))
-            let date = Date(timeIntervalSince1970: TimeInterval(review["time"] as! Int))
+            _ = Date(timeIntervalSince1970: TimeInterval(review["time"] as! Int)) //Date from timeStamp
             
             cell.timelbl.text = review["relative_time_description"] as? String
             if(review["text"] as? String == "")
@@ -373,36 +330,36 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         print("You tapped cell number \(indexPath.row).")
     }
 
-//    @objc func rightside()
-//    {
-//        switch true {
-//        case maincoursebtn.isSelected:
-//            left(btn1: maincoursebtn, btn2: soupbtn)
-//        case appetizeersbtn.isSelected:
-//            left(btn1: appetizeersbtn, btn2: maincoursebtn)
-//        case dessertbtn.isSelected:
-//            left(btn1: dessertbtn, btn2: appetizeersbtn)
-//        case soupbtn.isSelected:
-//            left(btn1: soupbtn, btn2: dessertbtn)
-//        default:
-//            print("Default called")
-//        }
-//    }
-//    @objc func leftside()
-//    {
-//        switch true {
-//        case maincoursebtn.isSelected:
-//            left(btn1: maincoursebtn, btn2: appetizeersbtn)
-//        case appetizeersbtn.isSelected:
-//            left(btn1: appetizeersbtn, btn2: dessertbtn)
-//        case dessertbtn.isSelected:
-//            left(btn1: dessertbtn, btn2: soupbtn)
-//        case soupbtn.isSelected:
-//            left(btn1: soupbtn, btn2: maincoursebtn)
-//        default:
-//           print("Default called")
-//        }
-//    }
+    @objc func rightside()
+    {
+        switch true {
+        case maincoursebtn.isSelected:
+            left(btn1: maincoursebtn, btn2: soupbtn)
+        case appetizeersbtn.isSelected:
+            left(btn1: appetizeersbtn, btn2: maincoursebtn)
+        case dessertbtn.isSelected:
+            left(btn1: dessertbtn, btn2: appetizeersbtn)
+        case soupbtn.isSelected:
+            left(btn1: soupbtn, btn2: dessertbtn)
+        default:
+            print("Default called")
+        }
+    }
+    @objc func leftside()
+    {
+        switch true {
+        case maincoursebtn.isSelected:
+            left(btn1: maincoursebtn, btn2: appetizeersbtn)
+        case appetizeersbtn.isSelected:
+            left(btn1: appetizeersbtn, btn2: dessertbtn)
+        case dessertbtn.isSelected:
+            left(btn1: dessertbtn, btn2: soupbtn)
+        case soupbtn.isSelected:
+            left(btn1: soupbtn, btn2: maincoursebtn)
+        default:
+           print("Default called")
+        }
+    }
     
     //MARK:- Custom Helpers
     func ButtonSelect(btn1 : UIButton, btn2 : UIButton, btn3 : UIButton)
@@ -447,20 +404,20 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         btn4.setTitleColor(UIColor.darkGray, for: UIControlState.normal)
     }
     
-//    func left(btn1 : UIButton, btn2 : UIButton)
-//    {
-//        btn1.isSelected = false
-//        btn1.setTitleColor(UIColor.darkGray, for: UIControlState.normal)
-//        btn2.isSelected = true
-//        btn2.setTitleColor(UIColor.orange, for: UIControlState.normal)
-//    }
-//    func right(btn1 : UIButton, btn2 : UIButton)
-//    {
-//        btn1.isSelected = false
-//        btn1.setTitleColor(UIColor.darkGray, for: UIControlState.normal)
-//        btn2.isSelected = true
-//        btn2.setTitleColor(UIColor.orange, for: UIControlState.normal)
-//    }
+    func left(btn1 : UIButton, btn2 : UIButton)
+    {
+        btn1.isSelected = false
+        btn1.setTitleColor(UIColor.darkGray, for: UIControlState.normal)
+        btn2.isSelected = true
+        btn2.setTitleColor(UIColor.orange, for: UIControlState.normal)
+    }
+    func right(btn1 : UIButton, btn2 : UIButton)
+    {
+        btn1.isSelected = false
+        btn1.setTitleColor(UIColor.darkGray, for: UIControlState.normal)
+        btn2.isSelected = true
+        btn2.setTitleColor(UIColor.orange, for: UIControlState.normal)
+    }
 //    func map()
 //    {
 //        mapview.showsUserLocation = true
