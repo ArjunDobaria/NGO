@@ -20,7 +20,7 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
     
 
     @IBOutlet weak var googlebtn: GIDSignInButton!
-    @IBOutlet weak var facebookbtn: LoginButton!
+    @IBOutlet weak var facebookbtn: FBSDKLoginButton!
     var isLoggin : Bool = false
     var dict : [String : AnyObject]!
     var Googledict : [String : AnyObject]!
@@ -34,6 +34,9 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
 
         GGLContext.sharedInstance().configureWithError(&error)
 
+        
+        
+        
         if error != nil{
             print(error ?? "google error")
             return
@@ -42,11 +45,13 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
         if let accessToken = FBSDKAccessToken.current() {
             print(accessToken)
         }
+        
+//        facebookbtn = LoginButton(readPermissions: [ .publicProfile, .Email, .UserFriends ])
 
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
         
-        facebookbtn = LoginButton(readPermissions: [ .publicProfile, .email, .userFriends ])
+//        facebookbtn = LoginButton(readPermissions: [ .publicProfile, .email, .userFriends ])
     }
     
 //    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -166,29 +171,20 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
     }
     
     @IBAction func facebookbtn(_ sender: Any) {
-//        let loginManager = LoginManager()
-//        loginManager.logIn(readPermissions : [ .publicProfile, .email, .userLocation ], viewController: self) { loginResult in
-//            switch loginResult {
-//            case .failed(let error):
-//                print(error)
-//            case .cancelled:
-//                print("User cancelled login.")
-////            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
-//            case .success:
-//                self.getFBUserData()
-//            }
-//        }
-        
         let loginManager = LoginManager()
+        
         loginManager.logIn(readPermissions : [ .publicProfile, .email, .userLocation ], viewController: self) { loginResult in
             switch loginResult {
             case .failed(let error):
                 print(error)
+                loginManager.logOut()
             case .cancelled:
                 print("User cancelled login.")
-            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
-                print("Logged in!")
-                self.getFBUserData()
+                loginManager.logOut()
+//            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
+            case .success:
+                print("in")
+//                self.getFBUserData()
             }
         }
     }

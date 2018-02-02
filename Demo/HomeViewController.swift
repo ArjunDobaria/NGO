@@ -148,7 +148,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     {
         activityIndecator.isHidden = false
         activityIndecator.startAnimating()
-        APIManager.sharedInstance.serviceGet("http://202.47.116.116:8552/nearme", headerParam: [:], successBlock:
+        APIManager.sharedInstance.serviceGet("http://192.168.200.53:8552/nearme", headerParam: [:], successBlock:
             {(response) in
                 self.dict = response as! [String : AnyObject]
                 self.msgArray = self.dict["results"] as! NSArray

@@ -479,7 +479,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         tblview2.isHidden = true
         activityIndecator.isHidden = false
         activityIndecator.startAnimating()
-        APIManager.sharedInstance.serviceGet("http://202.47.116.116:8552/hoteldetails", headerParam: [:], successBlock:
+        APIManager.sharedInstance.serviceGet("http://192.168.200.53:8552/hoteldetails", headerParam: [:], successBlock:
             {(response) in
                 print(response)
                 self.dict = response as! [String : AnyObject]

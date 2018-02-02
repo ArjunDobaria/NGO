@@ -16,16 +16,19 @@ import GooglePlaces
 import GoogleMaps
 import UserNotifications
 
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var isLoggin : Bool = false
-//    var center = UNUserNotificationCenter.current()
-  
+    var headerView : UIView!
+    var appName : UILabel!
+     var body : UILabel!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
          UserDefaults.standard.set("", forKey: "url")
         
+        //Mark:- Local Notification
 //        let options: UNAuthorizationOptions = [.alert, .sound]
 //        
 //        center.requestAuthorization(options: options) {
@@ -41,6 +44,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            }
 //        }
         
+        //Mark:- Push Notification
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound], completionHandler: {(granted, error) in
+                if(granted)
+                {
+                    application.registerForRemoteNotifications()
+                }
+                else
+                {
+                    print(error!.localizedDescription)
+                }
+                
+            })
+        } else {
+            let type: UIUserNotificationType = [UIUserNotificationType.badge, UIUserNotificationType.alert, UIUserNotificationType.sound]
+            let setting = UIUserNotificationSettings(types: type, categories: nil)
+            UIApplication.shared.registerUserNotificationSettings(setting)
+            UIApplication.shared.registerForRemoteNotifications()
+           
+        }
+        
+        
+        
         if(UserDefaults.standard.bool(forKey: "isUserLogin"))
         {
             isLoggin = true
@@ -51,6 +77,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSServices.provideAPIKey("AIzaSyDkWnLbjYJfbRs5tU5Uen2FzEXe0g8W4Ag")
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         return true
+    }
+    
+    //Mark:- Push Notification Methods
+  
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        print("success in registering for remote notifications with token \(deviceTokenString)")
+    }
+    
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    {
+        completionHandler(.alert)
+    }	
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("failed to register for remote notifications: \(error.localizedDescription)")
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        if application.applicationState == .active {
+            let aps = userInfo["aps"] as! [String : Any]
+            print(aps)
+            Banner(view: self.window!)
+        }
+        else
+        {
+            print("Received push notification: \(userInfo)")
+            let aps = userInfo["aps"] as! [String: Any]
+            print("\(aps)")
+        }
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
@@ -79,10 +138,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         return UIApplication.shared.delegate as! AppDelegate
     }
-
-//    func applicationWillResignActive(_ application: UIApplication) {
-//        FBSDKAppEvents.activateApp()
-//    }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
@@ -137,35 +192,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return encodedDictionary as String
     }
     
-}
-
-//class UYLNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
-//
-//    func userNotificationCenter(_ center: UNUserNotificationCenter,
-//                                willPresent notification: UNNotification,
-//                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-//        // Play sound and show alert to the user
-//        completionHandler([.alert,.sound])
-//    }
-//
-//    func userNotificationCenter(_ center: UNUserNotificationCenter,
-//                                didReceive response: UNNotificationResponse,
-//                                withCompletionHandler completionHandler: @escaping () -> Void) {
-//
-//        // Determine the user action
-//        switch response.actionIdentifier {
-//        case UNNotificationDismissActionIdentifier:
-//            print("Dismiss Action")
-//        case UNNotificationDefaultActionIdentifier:
-//            print("Default")
-//        case "Snooze":
-//            print("Snooze")
-//        case "Delete":
-//            print("Delete")
-//        default:
-//            print("Unknown action")
+    func Banner(view : UIView)
+    {
+        headerView = UIView()
+        
+        headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/8)
+        
+        headerView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        view.addSubview(headerView)
+        
+        appName = UILabel()
+        appName.frame = CGRect(x: 10, y: 10, width: UIScreen.main.bounds.width - 20, height: headerView.bounds.height / 2)
+        appName.textColor = UIColor.white
+        appName.text = "App Name"
+        appName.textAlignment = .left
+        appName.font = UIFont(name: appName.font.fontName, size: 15)
+        headerView.addSubview(appName)
+        
+        body = UILabel()
+        body.frame = CGRect(x: 10.0, y: appName.bounds.height, width: UIScreen.main.bounds.width, height: appName.bounds.height)
+        body.textColor = UIColor.white
+        body.text = "body of notification"
+        body.textAlignment = .left
+        body.font = UIFont(name: body.font.fontName, size: 12)
+        headerView.addSubview(body)
+        
+//        UIView.animate(withDuration: 3) {
+//            self.headerView.removeFromSuperview()
 //        }
-//        completionHandler()
-//    }
-//}
+//
+        
+    }
+    
+}
 
