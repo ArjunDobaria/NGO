@@ -15,7 +15,6 @@ import FBSDKLoginKit
 import Alamofire
 import UserNotifications
 
-
 class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, UNUserNotificationCenterDelegate {
     
 
@@ -29,6 +28,7 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
 //        UNUserNotificationCenter.current().delegate = self
         var error : NSError?
 
@@ -53,6 +53,7 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
         
 //        facebookbtn = LoginButton(readPermissions: [ .publicProfile, .email, .userFriends ])
     }
+    
     
 //    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
 //        completionHandler([.alert])

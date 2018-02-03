@@ -6,6 +6,9 @@ PODS:
   - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.9.0)
+  - Crashlytics (3.9.3):
+    - Fabric (~> 1.7.2)
+  - Fabric (1.7.2)
   - FacebookCore (0.3.0):
     - Bolts (~> 1.8)
     - FBSDKCoreKit (~> 4.27)
@@ -69,6 +72,8 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.5)
+  - Crashlytics
+  - Fabric
   - FacebookCore
   - FacebookLogin
   - Google/SignIn
@@ -82,6 +87,8 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
+  Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
   FacebookCore: 3ffa190a3f1f96cec0e44d3fc221bc322c595ffa
   FacebookLogin: 0af839ea858faef99550d16596b87b4a8e8906e6
   FBSDKCoreKit: 6f139173dc63a1deaff4430a55f2fe5bb222d2af
@@ -101,6 +108,6 @@ SPEC CHECKSUMS:
   LGSideMenuController: ae40c80983ab8b8801c7cef0a6804d43aaa72d45
   MFSideMenu: 268122e6894f2747fc3a2b48578100b232506c60
 
-PODFILE CHECKSUM: c53b942a18412d59cf624867b9fb1af3fa97cec1
+PODFILE CHECKSUM: 8e620c368013b5ae48bdd394a02fd4419fbc56e1
 
 COCOAPODS: 1.4.0

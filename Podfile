@@ -13,4 +13,6 @@ use_frameworks!
   pod 'GooglePlaces'
   pod 'GooglePlacePicker'
   pod 'GoogleMaps'
+  pod 'Fabric'
+  pod 'Crashlytics'
 end 

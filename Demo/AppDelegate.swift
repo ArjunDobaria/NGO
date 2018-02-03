@@ -15,18 +15,33 @@ import FBSDKCoreKit
 import GooglePlaces
 import GoogleMaps
 import UserNotifications
-
+import AudioToolbox
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var isLoggin : Bool = false
-    var headerView : UIView!
+    @objc var headerView : UIView!
     var appName : UILabel!
      var body : UILabel!
     
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+              Fabric.with([Crashlytics.self])
          UserDefaults.standard.set("", forKey: "url")
+        if let option = launchOptions {
+            let info = option[UIApplicationLaunchOptionsKey.remoteNotification]
+            if (info != nil) {
+               print("Call Function")
+            }}
+        
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().delegate = self
+        } else {
+            print("Not Available")
+        }
         
         //Mark:- Local Notification
 //        let options: UNAuthorizationOptions = [.alert, .sound]
@@ -43,13 +58,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                // Notifications not allowed
 //            }
 //        }
-        
+
         //Mark:- Push Notification
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound], completionHandler: {(granted, error) in
                 if(granted)
                 {
                     application.registerForRemoteNotifications()
+                    application.registerUserNotificationSettings(UIUserNotificationSettings(types:[.sound, .alert, .badge], categories: nil))
                 }
                 else
                 {
@@ -84,32 +100,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
         print("success in registering for remote notifications with token \(deviceTokenString)")
+        
     }
-    
-    @available(iOS 10.0, *)
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                willPresent notification: UNNotification,
-                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
-    {
-        completionHandler(.alert)
-    }	
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("failed to register for remote notifications: \(error.localizedDescription)")
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        if application.applicationState == .active {
-            let aps = userInfo["aps"] as! [String : Any]
-            print(aps)
-            Banner(view: self.window!)
-        }
-        else
-        {
+//        if application.applicationState == .active {
+//            let aps = userInfo["aps"] as! [String : Any]
+//            let imageURL = userInfo["data"] as! String
+//            print(aps)
+//            print(imageURL)
+//            Banner(view: self.window!, data: userInfo)
+//        }
+//        else
+//        {
             print("Received push notification: \(userInfo)")
             let aps = userInfo["aps"] as! [String: Any]
             print("\(aps)")
-        }
+//        }
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
@@ -192,37 +203,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return encodedDictionary as String
     }
     
-    func Banner(view : UIView)
-    {
-        headerView = UIView()
-        
-        headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/8)
-        
-        headerView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        view.addSubview(headerView)
-        
-        appName = UILabel()
-        appName.frame = CGRect(x: 10, y: 10, width: UIScreen.main.bounds.width - 20, height: headerView.bounds.height / 2)
-        appName.textColor = UIColor.white
-        appName.text = "App Name"
-        appName.textAlignment = .left
-        appName.font = UIFont(name: appName.font.fontName, size: 15)
-        headerView.addSubview(appName)
-        
-        body = UILabel()
-        body.frame = CGRect(x: 10.0, y: appName.bounds.height, width: UIScreen.main.bounds.width, height: appName.bounds.height)
-        body.textColor = UIColor.white
-        body.text = "body of notification"
-        body.textAlignment = .left
-        body.font = UIFont(name: body.font.fontName, size: 12)
-        headerView.addSubview(body)
-        
-//        UIView.animate(withDuration: 3) {
+//    func Banner(view : UIView, data: [AnyHashable : Any])
+//    {
+//        let aps = data["aps"] as! [String : Any]
+//        let img = data["data"] as! String
+//        AudioServicesPlaySystemSound(SystemSoundID(1007))
+//        headerView = UIView()
+//
+//        headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/7)
+//
+//        headerView.backgroundColor = UIColor.black.withAlphaComponent(1.0)
+//        view.addSubview(headerView)
+//
+//        appName = UILabel()
+//        appName.frame = CGRect(x: 10, y: 10, width: UIScreen.main.bounds.width - 20, height: headerView.bounds.height / 2)
+//        appName.textColor = UIColor.white
+//        appName.text = Bundle.main.infoDictionary![kCFBundleNameKey as String] as? String
+//        appName.textAlignment = .left
+//        appName.font = UIFont(name: appName.font.fontName, size: 15)
+//        headerView.addSubview(appName)
+//
+//        body = UILabel()
+//        body.frame = CGRect(x: 10.0, y: appName.bounds.height, width: UIScreen.main.bounds.width, height: appName.bounds.height)
+//        body.textColor = UIColor.white
+//        body.text = aps["alert"] as? String
+//        body.numberOfLines = 0
+//        body.textAlignment = .left
+//        body.font = UIFont(name: body.font.fontName, size: 12)
+//        headerView.addSubview(body)
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
 //            self.headerView.removeFromSuperview()
 //        }
-//
-        
-    }
-    
+//    }
+
+//    @available(iOS 10.0, *)
+//    func addAttachment()
+//    {
+//        let Imgurl : URL = URL(string: "https://athemes.com/wp-content/uploads/Original-JPG-Image.jpg")!
+//        let content = UNMutableNotificationContent()
+//        do {
+//            let attachment = try UNNotificationAttachment(identifier: "logo", url: Imgurl, options: nil)
+//            content.attachments = [attachment]
+//        } catch {
+//            print("The attachment was not loaded.")
+//        }
+//    }
 }
 
+
+@available(iOS 10.0, *)
+extension AppDelegate : UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler : @escaping(UNNotificationPresentationOptions) -> Void) {
+        completionHandler(.alert)
+    }
+}

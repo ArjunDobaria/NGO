@@ -54,6 +54,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		0C10D47A2025C140007ACB12 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0C1A58CF200F57E900AF8F76 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		0C1A58D0200F57E900AF8F76 /* HomeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableViewCell.xib; sourceTree = "<group>"; };
@@ -265,6 +278,8 @@
 				0C21A632200CDB9900030012 /* Resources */,
 				F64BBE1FFF648D20E99DF373 /* [CP] Embed Pods Frameworks */,
 				DB428B82B817FCA520A061E6 /* [CP] Copy Pods Resources */,
+				0C10D47A2025C140007ACB12 /* Embed App Extensions */,
+				0C10D47B2025D39A007ACB12 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -399,6 +414,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0C10D47B2025D39A007ACB12 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 7eb6d2fc33f9a0e03cd22b650579e82be6990e12 370c8fa1fd95c4876ec513036443fbfbfa405bfc99276fe52ece6939dbd1bf01";
+		};
 		BFEB6D2E4A07E5C5B7D6AE4A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -668,10 +696,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 30EA351F7C9BCC73A805B4DD /* Pods-Demo.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Demo/Demo.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = Y55EBSG532;
 				INFOPLIST_FILE = Demo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -690,6 +720,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A0E0853CF70D75011BA68816 /* Pods-Demo.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Demo/Demo.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
