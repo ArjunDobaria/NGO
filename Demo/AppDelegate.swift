@@ -31,12 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
               Fabric.with([Crashlytics.self])
          UserDefaults.standard.set("", forKey: "url")
-        if let option = launchOptions {
-            let info = option[UIApplicationLaunchOptionsKey.remoteNotification]
-            if (info != nil) {
-               print("Call Function")
-            }}
-        
+        setCategories()
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
         } else {
@@ -60,26 +55,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
 
         //Mark:- Push Notification
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound], completionHandler: {(granted, error) in
-                if(granted)
-                {
-                    application.registerForRemoteNotifications()
-                    application.registerUserNotificationSettings(UIUserNotificationSettings(types:[.sound, .alert, .badge], categories: nil))
-                }
-                else
-                {
-                    print(error!.localizedDescription)
-                }
-                
-            })
-        } else {
-            let type: UIUserNotificationType = [UIUserNotificationType.badge, UIUserNotificationType.alert, UIUserNotificationType.sound]
-            let setting = UIUserNotificationSettings(types: type, categories: nil)
-            UIApplication.shared.registerUserNotificationSettings(setting)
-            UIApplication.shared.registerForRemoteNotifications()
-           
+        if #available(iOS 10, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ granted, error in }
+        } else { // iOS 9 support
+            application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
         }
+        application.registerForRemoteNotifications()
         
         
         
@@ -123,6 +104,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
     }
     
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        if response.actionIdentifier == "meow" {
+            //Do something...
+        }
+        if response.actionIdentifier == "pizza" {
+            //Do something else...
+        }
+        completionHandler()
+    }
+    
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         //        return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
         
@@ -162,6 +155,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         FBSDKAppEvents.activateApp()
+        application.applicationIconBadgeNumber = 0
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -249,6 +243,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print("The attachment was not loaded.")
 //        }
 //    }
+    
+    func setCategories(){
+        let cancle = UNNotificationAction(identifier: "cancle", title: "Cancle", options: [])
+        let NotificationCategory = UNNotificationCategory(identifier: "cancle", actions: [cancle], intentIdentifiers: [], options: [])
+        UNUserNotificationCenter.current().setNotificationCategories([NotificationCategory])
+    }
+    
 }
 
 

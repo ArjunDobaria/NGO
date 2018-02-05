@@ -1776,6 +1776,40 @@
             </objects>
             <point key="canvasLocation" x="3213.75" y="28.52112676056338"/>
         </scene>
+        <!--In App Purchase View Controller-->
+        <scene sceneID="TSC-3r-179">
+            <objects>
+                <viewController storyboardIdentifier="inAppPurchaseViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="NTT-9E-qgb" customClass="inAppPurchaseViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jJu-H9-HCD">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Uyz-7O-ISX">
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="NTT-9E-qgb" id="72R-bc-qMm"/>
+                                    <outlet property="delegate" destination="NTT-9E-qgb" id="G5y-cV-xqE"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Uyz-7O-ISX" firstAttribute="top" secondItem="RqC-HF-MQ2" secondAttribute="top" id="2Ia-tV-p14"/>
+                            <constraint firstItem="Uyz-7O-ISX" firstAttribute="leading" secondItem="RqC-HF-MQ2" secondAttribute="leading" id="3xt-6D-TOo"/>
+                            <constraint firstItem="Uyz-7O-ISX" firstAttribute="trailing" secondItem="RqC-HF-MQ2" secondAttribute="trailing" id="HFN-TL-ZX6"/>
+                            <constraint firstItem="Uyz-7O-ISX" firstAttribute="bottom" secondItem="RqC-HF-MQ2" secondAttribute="bottom" id="dGb-dS-rJz"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="RqC-HF-MQ2"/>
+                    </view>
+                    <connections>
+                        <outlet property="tblView" destination="Uyz-7O-ISX" id="kEI-cP-sfr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cBy-yX-mco" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4044.375" y="134.1549295774648"/>
+        </scene>
         <!--Table View Controller-->
         <scene sceneID="yPf-TL-3b2">
             <objects>
