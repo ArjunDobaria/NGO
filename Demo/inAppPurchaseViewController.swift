@@ -34,6 +34,9 @@ class inAppPurchaseViewController: UIViewController, SKProductsRequestDelegate, 
         }
     }
     
+    @IBAction func back(_ sender: Any) {
+        _ = self.navigationController?.popViewController(animated: true)
+    }
     //MARK:- Delegate of SKProductRequest
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         if response.products.count != 0 {

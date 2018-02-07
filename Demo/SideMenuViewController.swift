@@ -22,7 +22,7 @@ class SideMenuViewController: UIViewController, UITableViewDelegate, UITableView
         {
             menuContainerViewController.menuWidth = 400
         }
-        tableData = NSMutableArray(objects: "Item1", "Item2", "Item3", "Item4", "Logout")
+        tableData = NSMutableArray(objects: "Side Menu", "In App", "tableView", "WebView", "Logout")
         self.tblview.separatorStyle = UITableViewCellSeparatorStyle.none
         
         // Do any additional setup after loading the view.
@@ -59,17 +59,17 @@ class SideMenuViewController: UIViewController, UITableViewDelegate, UITableView
         switch indexPath.row
         {
         case 0:
-            let vc: WebViewController = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+            let vc: CustomeSideMenuViewController = self.storyboard?.instantiateViewController(withIdentifier: "CustomeSideMenuViewController") as! CustomeSideMenuViewController
             rootNav.pushViewController(vc, animated: true)
             break
             
         case 1:
-            let vc: WebViewController = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+            let vc: inAppPurchaseViewController = self.storyboard?.instantiateViewController(withIdentifier: "inAppPurchaseViewController") as! inAppPurchaseViewController
             rootNav.pushViewController(vc, animated: true)
             break
             
         case 2:
-            let vc: WebViewController = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+            let vc: TableViewController = self.storyboard?.instantiateViewController(withIdentifier: "TableViewController") as! TableViewController
             rootNav.pushViewController(vc, animated: true)
             break
             

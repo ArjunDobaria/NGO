@@ -25,13 +25,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var isLoggin : Bool = false
     @objc var headerView : UIView!
     var appName : UILabel!
-     var body : UILabel!
+    var body : UILabel!
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-              Fabric.with([Crashlytics.self])
-         UserDefaults.standard.set("", forKey: "url")
-        setCategories()
+        Fabric.with([Crashlytics.self])
+        UserDefaults.standard.set("", forKey: "url")
+       
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
         } else {
@@ -63,12 +63,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         
         
-        
-        if(UserDefaults.standard.bool(forKey: "isUserLogin"))
-        {
-            isLoggin = true
-            DashbordCall()
-        }
+//        
+//        if(UserDefaults.standard.bool(forKey: "isUserLogin"))
+//        {
+//            isLoggin = true
+//            DashbordCall()
+//        }
         
         GMSPlacesClient.provideAPIKey("AIzaSyDkWnLbjYJfbRs5tU5Uen2FzEXe0g8W4Ag")
         GMSServices.provideAPIKey("AIzaSyDkWnLbjYJfbRs5tU5Uen2FzEXe0g8W4Ag")
@@ -89,19 +89,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-//        if application.applicationState == .active {
-//            let aps = userInfo["aps"] as! [String : Any]
-//            let imageURL = userInfo["data"] as! String
-//            print(aps)
-//            print(imageURL)
-//            Banner(view: self.window!, data: userInfo)
-//        }
-//        else
-//        {
-            print("Received push notification: \(userInfo)")
-            let aps = userInfo["aps"] as! [String: Any]
-            print("\(aps)")
-//        }
+        if application.applicationState == .active {
+                if #available(iOS 9, *) {
+                    Banner(view: self.window!, data: userInfo)
+                }else{
+                    print("Received push notification: \(userInfo)")
+                    let aps = userInfo["aps"] as! [String: Any]
+                    print("\(aps)")
+                }
+            }else{
+                print("Received push notification: \(userInfo)")
+                let aps = userInfo["aps"] as! [String: Any]
+                print("\(aps)")
+        }
     }
     
     @available(iOS 10.0, *)
@@ -197,61 +197,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return encodedDictionary as String
     }
     
-//    func Banner(view : UIView, data: [AnyHashable : Any])
-//    {
-//        let aps = data["aps"] as! [String : Any]
-//        let img = data["data"] as! String
-//        AudioServicesPlaySystemSound(SystemSoundID(1007))
-//        headerView = UIView()
-//
-//        headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/7)
-//
-//        headerView.backgroundColor = UIColor.black.withAlphaComponent(1.0)
-//        view.addSubview(headerView)
-//
-//        appName = UILabel()
-//        appName.frame = CGRect(x: 10, y: 10, width: UIScreen.main.bounds.width - 20, height: headerView.bounds.height / 2)
-//        appName.textColor = UIColor.white
-//        appName.text = Bundle.main.infoDictionary![kCFBundleNameKey as String] as? String
-//        appName.textAlignment = .left
-//        appName.font = UIFont(name: appName.font.fontName, size: 15)
-//        headerView.addSubview(appName)
-//
-//        body = UILabel()
-//        body.frame = CGRect(x: 10.0, y: appName.bounds.height, width: UIScreen.main.bounds.width, height: appName.bounds.height)
-//        body.textColor = UIColor.white
-//        body.text = aps["alert"] as? String
-//        body.numberOfLines = 0
-//        body.textAlignment = .left
-//        body.font = UIFont(name: body.font.fontName, size: 12)
-//        headerView.addSubview(body)
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-//            self.headerView.removeFromSuperview()
-//        }
-//    }
-
-//    @available(iOS 10.0, *)
-//    func addAttachment()
-//    {
-//        let Imgurl : URL = URL(string: "https://athemes.com/wp-content/uploads/Original-JPG-Image.jpg")!
-//        let content = UNMutableNotificationContent()
-//        do {
-//            let attachment = try UNNotificationAttachment(identifier: "logo", url: Imgurl, options: nil)
-//            content.attachments = [attachment]
-//        } catch {
-//            print("The attachment was not loaded.")
-//        }
-//    }
+    func Banner(view : UIView, data: [AnyHashable : Any])
+    {
+        let aps = data["aps"] as! [String : Any]
+       
+        AudioServicesPlaySystemSound(SystemSoundID(1007))
+        headerView = UIView()
+        if(UIDevice.current.userInterfaceIdiom == .pad){
+            headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/13)
+        }else
+        {
+            headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/7)
+        }
     
-    func setCategories(){
-        let cancle = UNNotificationAction(identifier: "cancle", title: "Cancle", options: [])
-        let NotificationCategory = UNNotificationCategory(identifier: "cancle", actions: [cancle], intentIdentifiers: [], options: [])
-        UNUserNotificationCenter.current().setNotificationCategories([NotificationCategory])
+        headerView.backgroundColor = UIColor.black.withAlphaComponent(1.0)
+        view.addSubview(headerView)
+
+        appName = UILabel()
+        appName.frame = CGRect(x: 10, y: 10, width: UIScreen.main.bounds.width - 20, height: headerView.bounds.height / 2)
+        appName.textColor = UIColor.white
+        appName.text = Bundle.main.infoDictionary![kCFBundleNameKey as String] as? String
+        appName.textAlignment = .left
+        appName.font = UIFont(name: appName.font.fontName, size: 15)
+        headerView.addSubview(appName)
+
+        body = UILabel()
+        body.frame = CGRect(x: 10.0, y: appName.bounds.height, width: UIScreen.main.bounds.width, height: appName.bounds.height)
+        body.textColor = UIColor.white
+        body.text = ((data["aps"] as! NSDictionary)["alert"] as! NSDictionary)["body"] as! String
+        body.numberOfLines = 0
+        body.textAlignment = .left
+        body.font = UIFont(name: body.font.fontName, size: 12)
+        headerView.addSubview(body)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
+            self.headerView.removeFromSuperview()
+        }
     }
     
 }
-
 
 @available(iOS 10.0, *)
 extension AppDelegate : UNUserNotificationCenterDelegate {

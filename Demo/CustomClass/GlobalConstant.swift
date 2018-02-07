@@ -9,3 +9,4 @@
 import Foundation
 import UIKit
 
+//Global Static Content put here.

@@ -133,7 +133,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         openclosebtn.layer.cornerRadius = 8
         
         placeid = UserDefaults.standard.object(forKey: "placeid") as! String
-        
+        self.urlbtn.setTitle("Direction", for: UIControlState.normal)
         PlaceDetails()
     }
     
@@ -223,7 +223,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
     
     @IBAction func webviewshowbtn(_ sender: Any) {
-        let url : String = (urlbtn.titleLabel?.text)!
+        let url : String = UserDefaults.standard.object(forKey: "urlWeb") as! String
         UserDefaults.standard.set(url, forKey: "url")
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
         self.navigationController?.pushViewController(vc, animated: true)
@@ -231,7 +231,10 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
     
     @IBAction func favoritrbtn(_ sender: Any) {
-        //Favorite Hotel
+        let alert = UIAlertController(title: "Add to Favorite", message: "Do you want to add this resturant as favorite ?", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancle", style: UIAlertActionStyle.cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     //MARK:- Table view delegate
     
@@ -330,7 +333,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         print("You tapped cell number \(indexPath.row).")
     }
 
-    @objc func rightside()
+    @objc func leftside()
     {
         switch true {
         case maincoursebtn.isSelected:
@@ -345,7 +348,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
             print("Default called")
         }
     }
-    @objc func leftside()
+    @objc func rightside()
     {
         switch true {
         case maincoursebtn.isSelected:
@@ -410,6 +413,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         btn1.setTitleColor(UIColor.darkGray, for: UIControlState.normal)
         btn2.isSelected = true
         btn2.setTitleColor(UIColor.orange, for: UIControlState.normal)
+        self.tblview.reloadData()
     }
     func right(btn1 : UIButton, btn2 : UIButton)
     {
@@ -417,6 +421,7 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         btn1.setTitleColor(UIColor.darkGray, for: UIControlState.normal)
         btn2.isSelected = true
         btn2.setTitleColor(UIColor.orange, for: UIControlState.normal)
+        self.tblview.reloadData()
     }
 //    func map()
 //    {
@@ -503,8 +508,9 @@ class HotelDetailsViewController: UIViewController, UITableViewDelegate, UITable
 //                print(response)
                 self.placedict = response as! [String : AnyObject]
                 self.reviewArray = (self.placedict["result"] as! NSDictionary)["reviews"] as! NSArray
-                let times : String = (self.placedict["result"] as! NSDictionary)["url"] as! String               
-                self.urlbtn.setTitle(times, for: UIControlState.normal)
+                let times : String = (self.placedict["result"] as! NSDictionary)["url"] as! String
+                UserDefaults.standard.set(times, forKey: "urlWeb")
+                
                 let data = (self.placedict["result"] as! NSDictionary)["types"] as! NSArray
                 print(data)
                 self.tblview.reloadData()

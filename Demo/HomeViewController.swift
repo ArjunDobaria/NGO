@@ -41,20 +41,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var img : UIImage = UIImage()
     var API_KEY : String = "AIzaSyDkWnLbjYJfbRs5tU5Uen2FzEXe0g8W4Ag"
     
-    var locationManager : CLLocationManager = CLLocationManager()
+   var locationManager : CLLocationManager = CLLocationManager()
     
     let cellSpacingHeight: CGFloat = 5
     override func viewDidLoad() {
         super.viewDidLoad()
-        HomeImg()
+//        HomeImg()
         tblview.dataSource = self
         tblview.delegate = self
         tblview.addSubview(refresh)
         tblview.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
-        self.locationManager.requestAlwaysAuthorization()
-        self.locationManager.requestWhenInUseAuthorization()
         refresh.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
+        
         if CLLocationManager.locationServicesEnabled() {
+            self.locationManager.requestAlwaysAuthorization()
+            self.locationManager.requestWhenInUseAuthorization()
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
@@ -67,6 +68,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @objc private func refreshWeatherData(_ sender: Any) {
         HomeImg()
     }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         print("locations = \(locValue.latitude) \(locValue.longitude)")
@@ -79,7 +81,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         menuContainerViewController.toggleLeftSideMenuCompletion(nil)
     }
     
-    //MARK:- Table vire delegate
+    //MARK:- Table view delegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return msgArray.count
         
@@ -101,10 +103,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let di : NSDictionary = self.msgArray[indexPath.row] as! NSDictionary
         
-        let myCell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
+        let myCell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell",for: indexPath) as! HomeTableViewCell
+        
+        myCell.navigationmapbtn.addTarget(self, action: #selector(self.buttonTapped), for: .touchUpInside)
+        
         myCell.titlelbl.text = di["name"] as? String
         return myCell
     }
+   
+    @objc func buttonTapped(sender : UIButton) {
+        let alert = UIAlertController(title: "Add to Favorite", message: "Do you want to add this resturant as favorite ?", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancle", style: UIAlertActionStyle.cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
     
     // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -138,7 +152,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Dispose of any resources that can be recreated.
     }
     
-    
     @IBAction func nearme(_ sender: Any) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
         self.navigationController?.pushViewController(vc, animated: true)
@@ -146,6 +159,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func HomeImg()
     {
+        self.tblview.separatorColor = UIColor.clear
         activityIndecator.isHidden = false
         activityIndecator.startAnimating()
         APIManager.sharedInstance.serviceGet("http://192.168.200.53:8552/nearme", headerParam: [:], successBlock:
@@ -153,9 +167,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.dict = response as! [String : AnyObject]
                 self.msgArray = self.dict["results"] as! NSArray
                 
-                self.height = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["photos"] as! NSArray)[0] as! NSDictionary)["height"] as! Int
+//                self.height = ((((self.dict["results"] as! NSArray)[0] as! NSDictionary)["photos"] as! NSArray)[0] as! NSDictionary)["height"] as! Int
                 self.name = ((self.dict["results"] as! NSArray)[0] as! NSDictionary)["name"] as! String
                 self.tblview.reloadData()
+                self.tblview.separatorColor = UIColor.groupTableViewBackground
         }, failureBlock: {(error) in
                 print(error)
         })

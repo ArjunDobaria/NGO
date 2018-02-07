@@ -23,6 +23,7 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
     var isLoggin : Bool = false
     var dict : [String : AnyObject]!
     var Googledict : [String : AnyObject]!
+    var image : UIImage = UIImage()
 //    var center = UNUserNotificationCenter.current()
 //    let notificationDelegate = UYLNotificationDelegate()
     
@@ -169,11 +170,14 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
     
     @IBAction func googlebtn(_ sender: Any) {
         GIDSignIn.sharedInstance().signIn()
+//        image = UIImage.init(named: "login")!
+//        if let imageData = image.jpeg(.lowest) {
+//            print(imageData.count)
+//        }
     }
     
     @IBAction func facebookbtn(_ sender: Any) {
         let loginManager = LoginManager()
-        
         loginManager.logIn(readPermissions : [ .publicProfile, .email, .userLocation ], viewController: self) { loginResult in
             switch loginResult {
             case .failed(let error):
@@ -184,8 +188,7 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
                 loginManager.logOut()
 //            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
             case .success:
-                print("in")
-//                self.getFBUserData()
+                self.getFBUserData()
             }
         }
     }

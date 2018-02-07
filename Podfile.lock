@@ -29,6 +29,8 @@ PODS:
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
   - FirebaseInstanceID (1.0.10):
     - FirebaseCore (~> 3.6)
+  - Google (3.1.0):
+    - Google/Core (= 3.1.0)
   - Google/Core (3.1.0):
     - FirebaseAnalytics (~> 3.2)
   - Google/SignIn (3.1.0):
@@ -76,6 +78,7 @@ DEPENDENCIES:
   - Fabric
   - FacebookCore
   - FacebookLogin
+  - Google
   - Google/SignIn
   - GoogleMaps
   - GooglePlacePicker
@@ -108,6 +111,6 @@ SPEC CHECKSUMS:
   LGSideMenuController: ae40c80983ab8b8801c7cef0a6804d43aaa72d45
   MFSideMenu: 268122e6894f2747fc3a2b48578100b232506c60
 
-PODFILE CHECKSUM: 8e620c368013b5ae48bdd394a02fd4419fbc56e1
+PODFILE CHECKSUM: a8ecbc5aca1132e386326dc0034da49e4a089c8b
 
 COCOAPODS: 1.4.0
